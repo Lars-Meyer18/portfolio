@@ -38,7 +38,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de" className={`${cormorant.variable} ${dmSans.variable}`}>
+    <html lang="de" className={`${cormorant.variable} ${dmSans.variable}`} suppressHydrationWarning>
       <body>
         <LanguageProvider>
           {children}

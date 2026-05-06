@@ -140,27 +140,6 @@ export default function Hero() {
                 {/* Subtle overlay for depth */}
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/10 to-transparent pointer-events-none" />
               </div>
-
-              {/* Floating stat card */}
-              <motion.div
-                initial={prefersReducedMotion ? {} : { opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.4, duration: 0.7 }}
-                className="absolute -left-8 bottom-16 bg-cream border border-gold-light/50 px-6 py-4 shadow-sm z-20"
-              >
-                <p className="font-serif text-2xl font-light text-gold leading-none">5.00</p>
-                <p className="font-sans text-xs text-muted mt-1 tracking-wide">GPA · FHNW</p>
-              </motion.div>
-
-              <motion.div
-                initial={prefersReducedMotion ? {} : { opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.6, duration: 0.7 }}
-                className="absolute -right-4 top-12 bg-ink px-6 py-4 shadow-sm z-20"
-              >
-                <p className="font-serif text-2xl font-light text-gold-light leading-none">220+</p>
-                <p className="font-sans text-xs text-gold-light/60 mt-1 tracking-wide">Liegenschaften</p>
-              </motion.div>
             </div>
           </motion.div>
 
