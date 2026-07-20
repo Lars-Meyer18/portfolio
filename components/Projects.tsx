@@ -44,7 +44,6 @@ export default function Projects() {
                   whileHover={{ y: -6 }}
                   transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                   className={`${colors.bg} border ${colors.border} p-8 flex flex-col h-full min-h-[360px] group`}
-                  style={{ cursor: 'none' }}
                 >
                   {/* Number */}
                   <span className={`font-serif text-6xl font-light ${colors.accent} opacity-30 leading-none mb-6`}>

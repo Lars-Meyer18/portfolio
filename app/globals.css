@@ -42,14 +42,6 @@ body {
   border-radius: 2px;
 }
 
-/* Custom cursor */
-* {
-  cursor: none;
-}
-
-@media (hover: none) {
-  * { cursor: auto; }
-}
 
 /* Section padding */
 .section-padding {
