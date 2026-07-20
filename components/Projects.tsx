@@ -62,9 +62,13 @@ export default function Projects() {
                   </h3>
 
                   {/* Description */}
-                  <p className={`font-sans text-sm font-light leading-relaxed ${colors.text} opacity-70 mb-6`}>
-                    {project.description}
-                  </p>
+                  <div className="mb-6 flex flex-col gap-3">
+                    {project.description.split('\n\n').map((para, pi) => (
+                      <p key={pi} className={`font-sans text-sm font-light leading-relaxed text-justify ${colors.text} opacity-70`}>
+                        {para}
+                      </p>
+                    ))}
+                  </div>
 
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2 mt-auto">
