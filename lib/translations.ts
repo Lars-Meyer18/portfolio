@@ -28,7 +28,7 @@ export const translations = {
       title: 'Erfahrung',
       entries: [
         {
-          period: '11.2025 – 10.2026',
+          period: '11.2025 – 07.2026',
           role: 'Immobilienbuchhalter',
           company: 'Heimatt Gruppe | Immo123 AG',
           location: 'Luzern, Schweiz',
@@ -106,12 +106,15 @@ export const translations = {
           description: 'Im Rahmen einer dreitägigen Projektwoche haben wir nach der Scrum-Methode in einem sechsköpfigen Team einen funktionsfähigen Onlineshop für einen fiktiven Fahrradladen aufgebaut. Auf Basis von Stakeholder-Analysen, priorisierten Backlogs und fünf aufeinanderfolgenden Sprints haben wir iterativ Anforderungen umgesetzt und nach jedem Sprint lauffähige Ergebnisse präsentiert. Der Fokus lag nicht nur auf dem Endprodukt, sondern auf dem gesamten agilen Prozess inklusive Sprint-Reviews und Retrospektiven.',
           tags: ['Scrum', 'Agile', 'E-Commerce', 'Teamorganisation'],
         },
+        {
+          id: '04',
+          title: 'Projektkosten – Controlling',
+          context: 'Projektarbeit, FHNW · 2026',
+          description: 'Im Rahmen des Projekts P4 entwickelte ich gemeinsam mit einem dreiköpfigen Projektteam der FHNW für die WAB-GROUP® ein durchgängiges Konzept für das Projektkosten-Controlling – von der Vorkalkulation bis zur Nachkalkulation.\n\nAls Scrum Master war ich für die Koordination des agilen Projektablaufs und die Zusammenarbeit im Team verantwortlich. Grundlage des Konzepts bildeten 21 Interviews mit internen Stakeholdern sowie eine umfassende Analyse der bestehenden Prozesse und Systemlandschaft.\n\nDas Ergebnis war ein praxisnahes Controlling-Konzept inklusive softwarebasierter Lösung, welche sämtliche relevanten Projektkosten zusammenführt und über ein Dashboard einen laufenden Soll-Ist-Vergleich ermöglicht. Dabei wurde besonders darauf geachtet, dass sich die Lösung in die bestehenden Betriebsabläufe integrieren lässt.',
+          tags: ['Scrum Master', 'Stakeholder-Analyse', 'Datenanalyse', 'Prozessoptimierung'],
+        },
       ],
       placeholders: [
-        {
-          title: 'Projekt 4 – In Arbeit',
-          description: 'Laufendes Projektstudium in Zusammenarbeit mit einem Industriepartner. Details folgen nach Abschluss.',
-        },
         {
           title: 'Projekt 5 – Digital Engineering',
           description: 'Kommendes Projekt mit Fokus auf die Vertiefungsrichtung Digital Engineering. Details folgen.',
@@ -253,7 +256,7 @@ export const translations = {
       title: 'Experience',
       entries: [
         {
-          period: '11.2025 – 10.2026',
+          period: '11.2025 – 07.2026',
           role: 'Real Estate Accountant',
           company: 'Heimatt Gruppe | Immo123 AG',
           location: 'Lucerne, Switzerland',
@@ -331,12 +334,15 @@ export const translations = {
           description: 'During a three-day project week, a six-person team built a fully functional online shop for a fictional bicycle retailer using the Scrum methodology. Working from stakeholder analyses and a prioritised backlog, we delivered incrementally across five consecutive sprints, presenting working results after each. The emphasis was not solely on the final product, but on the integrity of the agile process itself — including sprint reviews and retrospectives.',
           tags: ['Scrum', 'Agile', 'E-Commerce', 'Team Organisation'],
         },
+        {
+          id: '04',
+          title: 'Project Costs – Controlling',
+          context: 'Project Work, FHNW · 2026',
+          description: 'As part of the P4 project, I worked together with a three-member FHNW project team to develop an end-to-end concept for project cost controlling for WAB-GROUP® – from preliminary costing through to final costing.\n\nAs Scrum Master, I was responsible for coordinating the agile project workflow and for collaboration within the team. The concept was grounded in 21 interviews with internal stakeholders as well as a comprehensive analysis of the existing processes and system landscape.\n\nThe outcome was a practical controlling concept including a software-based solution that consolidates all relevant project costs and enables a continuous target-actual comparison via a dashboard. Particular care was taken to ensure that the solution integrates seamlessly into existing operational processes.',
+          tags: ['Scrum Master', 'Stakeholder Analysis', 'Data Analysis', 'Process Optimization'],
+        },
       ],
       placeholders: [
-        {
-          title: 'Project 4 – In Progress',
-          description: 'Ongoing project study in collaboration with an industry partner. Details to follow upon completion.',
-        },
         {
           title: 'Project 5 – Digital Engineering',
           description: 'Upcoming project focused on the Digital Engineering specialisation. Details to follow.',
