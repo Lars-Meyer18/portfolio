@@ -48,7 +48,6 @@ export default function Experience() {
                   <button
                     className="w-full text-left py-8 border-b border-gold/15 group"
                     onClick={() => setExpanded(expanded === i ? null : i)}
-                    style={{ cursor: 'none' }}
                   >
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2">
                       <div className="flex-1">
@@ -56,11 +55,6 @@ export default function Experience() {
                           <h3 className="font-serif text-xl font-light text-ink group-hover:text-gold transition-colors duration-300">
                             {entry.role}
                           </h3>
-                          {i === 0 && (
-                            <span className="font-sans text-xs tracking-wider px-2 py-0.5 bg-gold/10 text-gold border border-gold/20">
-                              {t.experience.label === 'Berufserfahrung' ? 'Aktuell' : 'Current'}
-                            </span>
-                          )}
                         </div>
                         <p className="font-sans text-sm text-muted">
                           {entry.company} · {entry.location}

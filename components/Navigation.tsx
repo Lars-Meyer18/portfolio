@@ -46,7 +46,6 @@ export default function Navigation() {
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="font-serif text-xl font-light tracking-[0.2em] text-ink hover:text-gold transition-colors duration-300"
-            style={{ cursor: 'none' }}
           >
             LM
           </button>
@@ -58,8 +57,7 @@ export default function Navigation() {
                 <button
                   onClick={() => handleNavClick(item.href)}
                   className="font-sans text-xs tracking-[0.15em] uppercase text-ink-light hover:text-gold transition-colors duration-300"
-                  style={{ cursor: 'none' }}
-                >
+                      >
                   {item.label}
                 </button>
               </li>
@@ -73,16 +71,14 @@ export default function Navigation() {
               <button
                 onClick={() => setLang('de')}
                 className={`transition-colors duration-300 ${lang === 'de' ? 'text-gold' : 'text-muted hover:text-ink-light'}`}
-                style={{ cursor: 'none' }}
-              >
+                  >
                 DE
               </button>
               <span className="text-gold-light">|</span>
               <button
                 onClick={() => setLang('en')}
                 className={`transition-colors duration-300 ${lang === 'en' ? 'text-gold' : 'text-muted hover:text-ink-light'}`}
-                style={{ cursor: 'none' }}
-              >
+                  >
                 EN
               </button>
             </div>
@@ -91,8 +87,7 @@ export default function Navigation() {
             <button
               className="md:hidden flex flex-col gap-[5px] p-1"
               onClick={() => setMenuOpen(!menuOpen)}
-              style={{ cursor: 'none' }}
-              aria-label="Menu"
+                aria-label="Menu"
             >
               <motion.span
                 animate={menuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
@@ -132,8 +127,7 @@ export default function Navigation() {
                 transition={{ delay: i * 0.07, duration: 0.5 }}
                 onClick={() => handleNavClick(item.href)}
                 className="font-serif text-4xl font-light text-ink hover:text-gold transition-colors"
-                style={{ cursor: 'none' }}
-              >
+                  >
                 {item.label}
               </motion.button>
             ))}

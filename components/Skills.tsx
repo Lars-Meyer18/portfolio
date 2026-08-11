@@ -65,7 +65,6 @@ export default function Skills() {
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center gap-4 font-sans text-sm tracking-wider uppercase text-gold border border-gold/40 px-8 py-4 hover:bg-gold hover:text-cream transition-all duration-300"
-              style={{ cursor: 'none' }}
             >
               LinkedIn
               <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>

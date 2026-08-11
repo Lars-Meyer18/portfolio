@@ -19,7 +19,6 @@ export default function Footer() {
           target="_blank"
           rel="noopener noreferrer"
           className="font-sans text-xs tracking-[0.2em] uppercase text-white/30 hover:text-gold transition-colors duration-300"
-          style={{ cursor: 'none' }}
         >
           {t.footer.linkedin}
         </a>
