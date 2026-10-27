@@ -22,7 +22,7 @@ export default async function Image({ params }: { params: Promise<{ locale: stri
   const [serif, sans, portrait] = await Promise.all([
     readFile(join(fontDir, 'cormorant-garamond/files/cormorant-garamond-latin-500-normal.woff')),
     readFile(join(fontDir, 'dm-sans/files/dm-sans-latin-500-normal.woff')),
-    readFile(join(process.cwd(), 'public/images/portrait.jpg')),
+    readFile(join(process.cwd(), 'public/images/portrait-2026.jpg')),
   ])
   const portraitSrc = `data:image/jpeg;base64,${portrait.toString('base64')}`
 

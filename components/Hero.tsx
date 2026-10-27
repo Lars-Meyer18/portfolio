@@ -72,7 +72,7 @@ export default function Hero({ hero, showStatus }: Props) {
               />
               <div className="hero-photo relative aspect-[4/5] overflow-hidden bg-sand" style={delay(0.2)}>
                 <Image
-                  src="/images/portrait.jpg"
+                  src="/images/portrait-2026.jpg"
                   alt={hero.portraitAlt}
                   fill
                   priority

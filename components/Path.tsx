@@ -11,7 +11,7 @@ import NextLink from './ui/NextLink'
 const images: Record<ChapterImage, string> = {
   craft: '/images/path-craft.jpg',
   switch: '/images/path-switch.jpg',
-  portrait: '/images/portrait.jpg',
+  portrait: '/images/portrait-2026.jpg',
   studies: '/images/path-studies.jpg',
 }
 

@@ -26,7 +26,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
     '@type': 'Person',
     name: 'Lars Meyer',
     url: `${SITE_URL}/${locale}`,
-    image: `${SITE_URL}/images/portrait.jpg`,
+    image: `${SITE_URL}/images/portrait-2026.jpg`,
     description: c.meta.description,
     affiliation: {
       '@type': 'CollegeOrUniversity',
