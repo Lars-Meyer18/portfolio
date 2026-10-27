@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import { motion, useReducedMotion, useScroll } from 'framer-motion'
+import { m, useReducedMotion, useScroll } from 'framer-motion'
 import type { About, ChapterImage } from '@/content/schema'
 import SectionHeader from './ui/SectionHeader'
 import Reveal from './ui/Reveal'
@@ -89,7 +89,7 @@ export default function Path({ about }: { about: About }) {
 
           <ol ref={listRef} className="relative lg:col-span-7">
             <span aria-hidden className="absolute bottom-0 left-0 top-0 w-px bg-gold/30" />
-            <motion.span
+            <m.span
               aria-hidden
               style={{ scaleY: reduce ? 1 : scrollYProgress }}
               className="absolute bottom-0 left-0 top-0 w-px origin-top bg-gold"
@@ -114,6 +114,7 @@ export default function Path({ about }: { about: About }) {
                         alt={c.imageAlt}
                         fill
                         sizes="(min-width: 768px) 42rem, 92vw"
+                        quality={65}
                         className="object-cover"
                       />
                     </div>
@@ -128,7 +129,7 @@ export default function Path({ about }: { about: About }) {
         </div>
 
         <Reveal>
-          <p className="mt-20 max-w-[42ch] border-l-2 border-gold pl-6 font-serif text-[clamp(1.5rem,2.6vw,2.125rem)] italic leading-snug">
+          <p className="mt-20 max-w-[42ch] border-l-2 border-gold pl-6 font-serif-italic text-[clamp(1.5rem,2.6vw,2.125rem)] italic leading-snug">
             {about.closing}
           </p>
         </Reveal>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import { motion, useReducedMotion, useScroll } from 'framer-motion'
+import { m, useReducedMotion, useScroll } from 'framer-motion'
 import type { Experience as ExperienceContent, ExperienceGroup, UiStrings } from '@/content/schema'
 import SectionHeader from './ui/SectionHeader'
 import Reveal from './ui/Reveal'
@@ -64,7 +64,7 @@ function Group({ group, open, toggle, ui }: GroupProps) {
       </div>
       <ol ref={ref} className="relative lg:col-span-9">
         <span aria-hidden className="absolute bottom-3 left-[5px] top-3 w-px bg-gold/30" />
-        <motion.span
+        <m.span
           aria-hidden
           style={{ scaleY: reduce ? 1 : scrollYProgress }}
           className="absolute bottom-3 left-[5px] top-3 w-px origin-top bg-gold"

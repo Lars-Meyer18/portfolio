@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, m, useReducedMotion } from 'framer-motion'
 import type { ResolvedProject } from '@/content'
 import type { Projects as ProjectsContent, UiStrings } from '@/content/schema'
 import SectionHeader from './ui/SectionHeader'
@@ -92,7 +92,7 @@ export default function Projects({ projects, ui }: Props) {
         </ul>
 
         <Reveal>
-          <p className="mt-16 flex max-w-measure items-start gap-5 font-serif text-[1.5rem] italic leading-snug text-ink-muted">
+          <p className="mt-16 flex max-w-measure items-start gap-5 font-serif-italic text-[1.5rem] italic leading-snug text-ink-muted">
             <span aria-hidden className="mt-[0.7em] h-px w-10 shrink-0 bg-gold" />
             {projects.outlook}
           </p>
@@ -217,7 +217,7 @@ function Panel({ project, labels, ui, onClose }: PanelProps) {
 
   return (
     <div className="fixed inset-0 z-[60]">
-      <motion.div
+      <m.div
         className="absolute inset-0 bg-ink/40"
         onClick={onClose}
         initial={{ opacity: 0 }}
@@ -225,7 +225,7 @@ function Panel({ project, labels, ui, onClose }: PanelProps) {
         exit={{ opacity: 0 }}
         transition={transition}
       />
-      <motion.div
+      <m.div
         ref={panelRef}
         role="dialog"
         aria-modal="true"
@@ -268,7 +268,7 @@ function Panel({ project, labels, ui, onClose }: PanelProps) {
           </div>
           <Tags tags={project.tags} />
         </div>
-      </motion.div>
+      </m.div>
     </div>
   )
 }

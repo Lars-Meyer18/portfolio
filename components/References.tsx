@@ -29,7 +29,7 @@ export default function References({ references, sources, locale }: Props) {
           {references.items.map((item, i) => (
             <Reveal key={item.id} index={i} className="h-full">
               <figure className="flex h-full flex-col border-t border-gold/60 pt-8">
-                <blockquote className="flex-1 font-serif text-[1.5rem] italic leading-snug">
+                <blockquote className="flex-1 font-serif-italic text-[1.5rem] italic leading-snug">
                   <p>
                     {open}
                     {item.quote}

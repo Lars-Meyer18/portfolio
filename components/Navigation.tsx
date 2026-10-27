@@ -98,12 +98,11 @@ export default function Navigation({ locale, nav, ui }: Props) {
             <a
               href={`/${l}`}
               hrefLang={l}
-              lang={l}
               onClick={switchLanguage}
-              aria-label={ui.switchToLanguage}
               className="text-ink-muted transition-colors hover:text-ink"
             >
-              {l.toUpperCase()}
+              <span lang={l}>{l.toUpperCase()}</span>
+              <span className="sr-only">, {ui.switchToLanguage}</span>
             </a>
           )}
         </span>
@@ -133,9 +132,9 @@ export default function Navigation({ locale, nav, ui }: Props) {
           <a
             href="#top"
             className="font-serif text-2xl tracking-[0.15em] text-ink transition-colors hover:text-gold-text"
-            aria-label="Lars Meyer"
           >
-            LM
+            <span aria-hidden>LM</span>
+            <span className="sr-only">Lars Meyer</span>
           </a>
 
           <ul className="hidden items-center gap-8 md:flex">

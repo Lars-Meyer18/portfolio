@@ -2,7 +2,7 @@
 
 import { useRef } from 'react'
 import Image from 'next/image'
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import { m, useReducedMotion, useScroll, useTransform } from 'framer-motion'
 import type { Hero as HeroContent } from '@/content/schema'
 
 interface Props {
@@ -28,8 +28,8 @@ export default function Hero({ hero, showStatus }: Props) {
 
           <h1 className="mt-5 text-[clamp(3.5rem,min(8vw,13vh),7rem)] leading-[0.95] tracking-[-0.02em]">
             {['Lars', 'Meyer'].map((word, i) => (
-              <span key={word} className="block overflow-hidden pb-[0.08em]">
-                <span className="hero-word" style={delay(0.2 + i * 0.12)}>
+              <span key={word} className="block pb-[0.08em]">
+                <span className="hero-word" style={delay(i * 0.12)}>
                   {word}
                 </span>
               </span>
@@ -65,7 +65,7 @@ export default function Hero({ hero, showStatus }: Props) {
 
         <div className="order-1 lg:order-2 lg:col-span-5">
           <div className="relative mx-auto w-full max-w-[17rem] sm:max-w-[22rem] lg:ml-auto lg:max-w-[min(100%,calc((100svh-var(--header-h)-6rem)*0.8))]">
-            <motion.div style={reduce ? undefined : { y: photoY }} className="relative">
+            <m.div style={reduce ? undefined : { y: photoY }} className="relative">
               <span
                 aria-hidden
                 className="absolute inset-0 translate-x-3 translate-y-3 border border-gold/60 lg:translate-x-5 lg:translate-y-5"
@@ -76,11 +76,11 @@ export default function Hero({ hero, showStatus }: Props) {
                   alt={hero.portraitAlt}
                   fill
                   priority
-                  sizes="(min-width: 1024px) 34vw, (min-width: 640px) 24rem, 20rem"
+                  sizes="(min-width: 1024px) 34vw, (min-width: 640px) 22rem, 17rem"
                   className="object-cover object-top"
                 />
               </div>
-            </motion.div>
+            </m.div>
           </div>
         </div>
       </div>

@@ -179,9 +179,11 @@
 }
 
 /* Hero entrance runs in CSS so it starts before hydration and keeps LCP low. */
+/* The name stays fully visible from the first frame (it is the LCP element)
+   and only settles into place. */
 @keyframes rise {
   from {
-    transform: translateY(105%);
+    transform: translateY(0.3em);
   }
   to {
     transform: translateY(0);

@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from 'next'
 import { notFound } from 'next/navigation'
 import '../globals.css'
-import { serif, sans } from '../fonts'
+import { serif, serifItalic, sans } from '../fonts'
 import { getContent, isLocale, locales } from '@/content'
 import { SITE_URL } from '@/content/flags'
+import MotionProvider from '@/components/MotionProvider'
 
 export const dynamicParams = false
 
@@ -64,8 +65,14 @@ export default async function LocaleLayout({
   if (!isLocale(locale)) notFound()
 
   return (
-    <html lang={locale} className={`${serif.variable} ${sans.variable}`} suppressHydrationWarning>
-      <body>{children}</body>
+    <html
+      lang={locale}
+      className={`${serif.variable} ${serifItalic.variable} ${sans.variable}`}
+      suppressHydrationWarning
+    >
+      <body>
+        <MotionProvider>{children}</MotionProvider>
+      </body>
     </html>
   )
 }

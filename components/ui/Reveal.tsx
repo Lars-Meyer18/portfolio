@@ -1,7 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { motion, useReducedMotion } from 'framer-motion'
+import { m, useReducedMotion } from 'framer-motion'
 
 const ease = [0.22, 1, 0.36, 1] as const
 
@@ -18,7 +18,7 @@ interface Props {
 export default function Reveal({ children, className, index = 0, id }: Props) {
   const reduce = useReducedMotion()
   return (
-    <motion.div
+    <m.div
       id={id}
       className={className}
       initial={{ opacity: 0, y: 24 }}
@@ -27,6 +27,6 @@ export default function Reveal({ children, className, index = 0, id }: Props) {
       transition={reduce ? { duration: 0 } : { duration: 0.7, delay: index * 0.08, ease }}
     >
       {children}
-    </motion.div>
+    </m.div>
   )
 }

@@ -11,6 +11,7 @@ const config: Config = {
       colors,
       fontFamily: {
         serif: ['var(--font-cormorant)', 'Georgia', 'serif'],
+        'serif-italic': ['var(--font-cormorant-italic)', 'Georgia', 'serif'],
         sans: ['var(--font-dm-sans)', 'system-ui', 'sans-serif'],
       },
       maxWidth: {

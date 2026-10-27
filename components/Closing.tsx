@@ -35,8 +35,9 @@ export default function Closing({ closing }: { closing: ClosingContent }) {
       <footer className="bg-sand">
         <div className="container-page flex flex-wrap items-center justify-between gap-4 border-t border-ink/10 py-8 text-sm text-ink-muted">
           <p>{closing.footer.replace('{year}', String(year))}</p>
-          <a href="#top" aria-label="Lars Meyer" className="font-serif text-xl tracking-[0.15em] text-ink hover:text-gold-text">
-            LM
+          <a href="#top" className="font-serif text-xl tracking-[0.15em] text-ink hover:text-gold-text">
+            <span aria-hidden>LM</span>
+            <span className="sr-only">Lars Meyer</span>
           </a>
         </div>
       </footer>
