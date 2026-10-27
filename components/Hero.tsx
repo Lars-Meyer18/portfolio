@@ -72,12 +72,13 @@ export default function Hero({ hero, showStatus }: Props) {
               />
               <div className="hero-photo relative aspect-[4/5] overflow-hidden bg-sand" style={delay(0.2)}>
                 <Image
-                  src="/images/portrait-2026.jpg"
+                  src="/images/hero-2026.jpg"
                   alt={hero.portraitAlt}
                   fill
                   priority
                   sizes="(min-width: 1024px) 34vw, (min-width: 640px) 22rem, 17rem"
-                  className="object-cover object-top"
+                  // The photo has a lot of headroom; this keeps the face in the upper third.
+                  className="object-cover object-[center_62%]"
                 />
               </div>
             </m.div>
