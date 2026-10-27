@@ -2,147 +2,86 @@
 
 import { useRef } from 'react'
 import Image from 'next/image'
-import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
-import { useLanguage } from '@/lib/LanguageContext'
+import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion'
+import type { Hero as HeroContent } from '@/content/schema'
 
-const nameWords = ['Lars', 'Meyer']
+interface Props {
+  hero: HeroContent
+  showStatus: boolean
+}
 
-export default function Hero() {
-  const { t } = useLanguage()
-  const prefersReducedMotion = useReducedMotion()
-  const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end start'] })
+const delay = (s: number) => ({ animationDelay: `${s}s` })
 
-  const imageY = useTransform(scrollYProgress, [0, 1], ['0%', '20%'])
-  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '10%'])
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
+export default function Hero({ hero, showStatus }: Props) {
+  const ref = useRef<HTMLElement>(null)
+  const reduce = useReducedMotion()
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
+  const photoY = useTransform(scrollYProgress, [0, 1], [0, 40])
 
   return (
-    <section
-      ref={containerRef}
-      className="relative min-h-screen flex items-center overflow-hidden bg-cream"
-      aria-label="Hero"
-    >
-      {/* Background grain texture */}
-      <div
-        className="absolute inset-0 opacity-[0.025] pointer-events-none"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }}
-      />
+    <section id="top" ref={ref} aria-label="Lars Meyer" className="relative bg-cream">
+      <div className="container-page grid min-h-[100svh] items-center gap-x-12 gap-y-12 pb-16 pt-[calc(var(--header-h)+2rem)] lg:grid-cols-12 lg:pb-12">
+        <div className="order-2 lg:order-1 lg:col-span-7">
+          <p className="eyebrow hero-fade" style={delay(0.1)}>
+            {hero.eyebrow}
+          </p>
 
-      <div className="max-w-7xl mx-auto px-6 md:px-10 w-full pt-28 pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center min-h-[80vh]">
-
-          {/* Left: Text */}
-          <motion.div
-            style={prefersReducedMotion ? {} : { y: textY, opacity }}
-            className="order-2 lg:order-1 flex flex-col justify-center"
-          >
-            {/* Label */}
-            <motion.p
-              initial={prefersReducedMotion ? {} : { opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="font-sans text-xs tracking-[0.3em] uppercase text-gold mb-8"
-            >
-              Portfolio
-            </motion.p>
-
-            {/* Name */}
-            <h1 className="font-serif font-light leading-none mb-8 overflow-hidden">
-              {nameWords.map((word, wi) => (
-                <span key={word} className="block overflow-hidden">
-                  <motion.span
-                    className="block"
-                    initial={prefersReducedMotion ? {} : { y: '100%', opacity: 0 }}
-                    animate={{ y: '0%', opacity: 1 }}
-                    transition={{
-                      duration: 1,
-                      delay: 0.5 + wi * 0.15,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                    style={{
-                      fontSize: 'clamp(4rem, 8vw, 8rem)',
-                      letterSpacing: '-0.02em',
-                    }}
-                  >
-                    {word}
-                  </motion.span>
+          <h1 className="mt-5 text-[clamp(3.5rem,min(8vw,13vh),7rem)] leading-[0.95] tracking-[-0.02em]">
+            {['Lars', 'Meyer'].map((word, i) => (
+              <span key={word} className="block overflow-hidden pb-[0.08em]">
+                <span className="hero-word" style={delay(0.2 + i * 0.12)}>
+                  {word}
                 </span>
-              ))}
-            </h1>
-
-            {/* Gold divider */}
-            <motion.div
-              initial={prefersReducedMotion ? {} : { scaleX: 0, originX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              className="h-px bg-gold mb-8 w-20"
-            />
-
-            {/* Tagline */}
-            <motion.p
-              initial={prefersReducedMotion ? {} : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.1 }}
-              className="font-sans font-light text-ink-light tracking-wide leading-relaxed max-w-sm"
-              style={{ fontSize: 'clamp(0.85rem, 1.5vw, 1rem)' }}
-            >
-              {t.hero.tagline}
-            </motion.p>
-
-            {/* Scroll indicator */}
-            <motion.div
-              initial={prefersReducedMotion ? {} : { opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.8, duration: 0.6 }}
-              className="mt-20 flex items-center gap-4"
-            >
-              <motion.div
-                animate={prefersReducedMotion ? {} : { y: [0, 8, 0] }}
-                transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
-                className="flex flex-col items-center gap-1"
-              >
-                <div className="w-px h-12 bg-gradient-to-b from-gold to-transparent" />
-              </motion.div>
-              <span className="font-sans text-xs tracking-[0.25em] uppercase text-muted">
-                {t.hero.scroll}
               </span>
-            </motion.div>
-          </motion.div>
+            ))}
+          </h1>
 
-          {/* Right: Photo */}
-          <motion.div
-            style={prefersReducedMotion ? {} : { y: imageY }}
-            initial={prefersReducedMotion ? {} : { opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="order-1 lg:order-2 relative"
+          <span aria-hidden className="hero-line mt-5 block h-px w-20 bg-gold" style={delay(0.5)} />
+
+          <p
+            className="hero-fade mt-6 max-w-[26ch] font-serif text-[clamp(1.6rem,2.6vw,2.25rem)] leading-[1.2]"
+            style={delay(0.6)}
           >
-            <div className="relative mx-auto lg:ml-auto" style={{ maxWidth: '480px' }}>
-              {/* Decorative gold frame offset */}
-              <div
-                className="absolute -bottom-4 -right-4 border border-gold/30 rounded-sm pointer-events-none z-0"
-                style={{ inset: undefined, top: '24px', left: '24px', right: '-16px', bottom: '-16px' }}
+            {hero.hook}
+          </p>
+
+          <p className="hero-fade mt-5 max-w-measure text-ink-muted" style={delay(0.72)}>
+            {hero.subtitle}
+          </p>
+
+          <div className="hero-fade mt-10 flex flex-wrap items-center gap-x-10 gap-y-4" style={delay(0.9)}>
+            {showStatus && (
+              <p className="inline-flex items-center gap-3 text-sm text-ink-muted">
+                <span aria-hidden className="h-2 w-2 rounded-full bg-gold" />
+                {hero.status}
+              </p>
+            )}
+            <a href="#about" className="eyebrow hidden items-center gap-3 lg:inline-flex">
+              <span aria-hidden className="scroll-nudge block h-8 w-px bg-gold" />
+              {hero.scroll}
+            </a>
+          </div>
+        </div>
+
+        <div className="order-1 lg:order-2 lg:col-span-5">
+          <div className="relative mx-auto w-full max-w-[17rem] sm:max-w-[22rem] lg:ml-auto lg:max-w-[min(100%,calc((100svh-var(--header-h)-6rem)*0.8))]">
+            <motion.div style={reduce ? undefined : { y: photoY }} className="relative">
+              <span
+                aria-hidden
+                className="absolute inset-0 translate-x-3 translate-y-3 border border-gold/60 lg:translate-x-5 lg:translate-y-5"
               />
-
-              {/* Photo container */}
-              <div className="relative z-10 overflow-hidden rounded-sm" style={{ aspectRatio: '3/4' }}>
+              <div className="hero-photo relative aspect-[4/5] overflow-hidden bg-sand" style={delay(0.2)}>
                 <Image
-                  src="/profile.jpg"
-                  alt="Lars Meyer"
+                  src="/images/portrait.jpg"
+                  alt={hero.portraitAlt}
                   fill
-                  className="object-cover object-top"
                   priority
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(min-width: 1024px) 34vw, (min-width: 640px) 24rem, 20rem"
+                  className="object-cover object-top"
                 />
-                {/* Subtle overlay for depth */}
-                <div className="absolute inset-0 bg-gradient-to-t from-ink/10 to-transparent pointer-events-none" />
               </div>
-            </div>
-          </motion.div>
-
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>

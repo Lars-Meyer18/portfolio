@@ -1,139 +1,205 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { useLanguage } from '@/lib/LanguageContext'
+import { useEffect, useRef, useState, type MouseEvent } from 'react'
+import { useRouter } from 'next/navigation'
+import type { Locale, Nav, UiStrings } from '@/content/schema'
 
-export default function Navigation() {
+const sections = ['about', 'experience', 'projects', 'education', 'skills'] as const
+type SectionId = (typeof sections)[number]
+
+interface Props {
+  locale: Locale
+  nav: Nav
+  ui: UiStrings
+}
+
+export default function Navigation({ locale, nav, ui }: Props) {
+  const router = useRouter()
   const [scrolled, setScrolled] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
-  const { lang, setLang, t } = useLanguage()
+  const [active, setActive] = useState<SectionId | null>(null)
+  const [open, setOpen] = useState(false)
+  const toggleRef = useRef<HTMLButtonElement>(null)
+  const firstLinkRef = useRef<HTMLAnchorElement>(null)
+  const other: Locale = locale === 'de' ? 'en' : 'de'
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60)
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  const navItems = [
-    { label: t.nav.about, href: '#about' },
-    { label: t.nav.experience, href: '#experience' },
-    { label: t.nav.projects, href: '#projects' },
-    { label: t.nav.education, href: '#education' },
-    { label: t.nav.skills, href: '#skills' },
-  ]
+  // Scrollspy: the section crossing the middle of the viewport is active.
+  useEffect(() => {
+    const visible = new Map<string, boolean>()
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) visible.set(e.target.id, e.isIntersecting)
+        setActive(sections.find((id) => visible.get(id)) ?? null)
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    )
+    for (const id of sections) {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    }
+    return () => observer.disconnect()
+  }, [])
 
-  const handleNavClick = (href: string) => {
-    setMenuOpen(false)
-    const el = document.querySelector(href)
-    if (el) el.scrollIntoView({ behavior: 'smooth' })
+  // Mobile menu: lock scroll, close on Escape, move focus in and back out.
+  useEffect(() => {
+    if (!open) return
+    document.body.style.overflow = 'hidden'
+    firstLinkRef.current?.focus()
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setOpen(false)
+        toggleRef.current?.focus()
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
+  // Keep the reader at the same section when switching language.
+  const switchLanguage = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey) return
+    e.preventDefault()
+    const hash = window.location.hash.startsWith('#project-')
+      ? window.location.hash
+      : active
+        ? `#${active}`
+        : ''
+    setOpen(false)
+    router.push(`/${other}${hash}`, { scroll: false })
   }
+
+  const languageSwitch = (
+    <div
+      role="group"
+      aria-label={ui.languageLabel}
+      className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em]"
+    >
+      {(['de', 'en'] as const).map((l, i) => (
+        <span key={l} className="flex items-center gap-2">
+          {i > 0 && (
+            <span aria-hidden className="text-gold">
+              |
+            </span>
+          )}
+          {l === locale ? (
+            <span aria-current="true" className="text-ink">
+              {l.toUpperCase()}
+            </span>
+          ) : (
+            <a
+              href={`/${l}`}
+              hrefLang={l}
+              lang={l}
+              onClick={switchLanguage}
+              aria-label={ui.switchToLanguage}
+              className="text-ink-muted transition-colors hover:text-ink"
+            >
+              {l.toUpperCase()}
+            </a>
+          )}
+        </span>
+      ))}
+    </div>
+  )
 
   return (
     <>
-      <motion.header
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled
-            ? 'bg-cream/90 backdrop-blur-md border-b border-gold-light/40 py-4'
-            : 'bg-transparent py-6'
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:bg-ink focus:px-4 focus:py-2 focus:text-cream"
+      >
+        {ui.skipToContent}
+      </a>
+      <header
+        className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
+          scrolled || open
+            ? 'border-ink/5 bg-cream/90 backdrop-blur-md'
+            : 'border-transparent bg-transparent'
         }`}
       >
-        <nav className="max-w-7xl mx-auto px-6 md:px-10 flex items-center justify-between">
-          {/* Logo */}
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="font-serif text-xl font-light tracking-[0.2em] text-ink hover:text-gold transition-colors duration-300"
+        <nav
+          aria-label={ui.mainNav}
+          className="container-page flex h-[var(--header-h)] items-center justify-between"
+        >
+          <a
+            href="#top"
+            className="font-serif text-2xl tracking-[0.15em] text-ink transition-colors hover:text-gold-text"
+            aria-label="Lars Meyer"
           >
             LM
-          </button>
+          </a>
 
-          {/* Desktop nav */}
-          <ul className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
-              <li key={item.href}>
-                <button
-                  onClick={() => handleNavClick(item.href)}
-                  className="font-sans text-xs tracking-[0.15em] uppercase text-ink-light hover:text-gold transition-colors duration-300"
-                      >
-                  {item.label}
-                </button>
+          <ul className="hidden items-center gap-8 md:flex">
+            {sections.map((id) => (
+              <li key={id}>
+                <a
+                  href={`#${id}`}
+                  aria-current={active === id ? 'true' : undefined}
+                  className={`link-underline py-1 text-xs font-medium uppercase tracking-[0.18em] transition-colors hover:text-ink ${
+                    active === id ? 'text-ink' : 'text-ink-muted'
+                  }`}
+                >
+                  {nav[id]}
+                </a>
               </li>
             ))}
           </ul>
 
-          {/* Right: Language + Mobile toggle */}
           <div className="flex items-center gap-6">
-            {/* Language switcher */}
-            <div className="flex items-center gap-2 font-sans text-xs tracking-[0.15em] uppercase">
-              <button
-                onClick={() => setLang('de')}
-                className={`transition-colors duration-300 ${lang === 'de' ? 'text-gold' : 'text-muted hover:text-ink-light'}`}
-                  >
-                DE
-              </button>
-              <span className="text-gold-light">|</span>
-              <button
-                onClick={() => setLang('en')}
-                className={`transition-colors duration-300 ${lang === 'en' ? 'text-gold' : 'text-muted hover:text-ink-light'}`}
-                  >
-                EN
-              </button>
-            </div>
-
-            {/* Mobile hamburger */}
+            <div className="hidden md:block">{languageSwitch}</div>
             <button
-              className="md:hidden flex flex-col gap-[5px] p-1"
-              onClick={() => setMenuOpen(!menuOpen)}
-                aria-label="Menu"
+              ref={toggleRef}
+              type="button"
+              className="-mr-2 flex h-11 w-11 flex-col items-center justify-center gap-[6px] md:hidden"
+              aria-expanded={open}
+              aria-controls="mobile-menu"
+              aria-label={open ? ui.menuClose : ui.menuOpen}
+              onClick={() => setOpen((v) => !v)}
             >
-              <motion.span
-                animate={menuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="block w-5 h-px bg-ink"
+              <span
+                className={`block h-px w-6 bg-ink transition-transform duration-300 ${open ? 'translate-y-[3.5px] rotate-45' : ''}`}
               />
-              <motion.span
-                animate={menuOpen ? { opacity: 0 } : { opacity: 1 }}
-                transition={{ duration: 0.2 }}
-                className="block w-5 h-px bg-ink"
-              />
-              <motion.span
-                animate={menuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="block w-5 h-px bg-ink"
+              <span
+                className={`block h-px w-6 bg-ink transition-transform duration-300 ${open ? '-translate-y-[3.5px] -rotate-45' : ''}`}
               />
             </button>
           </div>
         </nav>
-      </motion.header>
+      </header>
 
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="fixed inset-0 z-40 bg-cream flex flex-col items-center justify-center gap-10"
-          >
-            {navItems.map((item, i) => (
-              <motion.button
-                key={item.href}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.07, duration: 0.5 }}
-                onClick={() => handleNavClick(item.href)}
-                className="font-serif text-4xl font-light text-ink hover:text-gold transition-colors"
-                  >
-                {item.label}
-              </motion.button>
+      <div
+        id="mobile-menu"
+        hidden={!open}
+        className="fixed inset-0 z-40 overflow-y-auto bg-cream pt-[var(--header-h)] md:hidden"
+      >
+        <div className="container-page reveal-in flex min-h-full flex-col justify-between py-12">
+          <ul className="space-y-6">
+            {sections.map((id, i) => (
+              <li key={id}>
+                <a
+                  ref={i === 0 ? firstLinkRef : undefined}
+                  href={`#${id}`}
+                  onClick={() => setOpen(false)}
+                  aria-current={active === id ? 'true' : undefined}
+                  className="font-serif text-4xl text-ink"
+                >
+                  {nav[id]}
+                </a>
+              </li>
             ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </ul>
+          <div className="mt-12 border-t border-gold/40 pt-6">{languageSwitch}</div>
+        </div>
+      </div>
     </>
   )
 }

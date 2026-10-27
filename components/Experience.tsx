@@ -1,102 +1,123 @@
 'use client'
 
-import { useState } from 'react'
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
-import { useLanguage } from '@/lib/LanguageContext'
-import AnimatedSection from './AnimatedSection'
+import { useRef, useState } from 'react'
+import { motion, useReducedMotion, useScroll } from 'framer-motion'
+import type { Experience as ExperienceContent, ExperienceGroup, UiStrings } from '@/content/schema'
+import SectionHeader from './ui/SectionHeader'
+import Reveal from './ui/Reveal'
+import NextLink from './ui/NextLink'
 
-export default function Experience() {
-  const { t } = useLanguage()
-  const [expanded, setExpanded] = useState<number | null>(0)
-  const prefersReducedMotion = useReducedMotion()
+interface Props {
+  experience: ExperienceContent
+  ui: UiStrings
+}
+
+export default function Experience({ experience, ui }: Props) {
+  const [open, setOpen] = useState<Set<string>>(new Set())
+  const toggle = (id: string) =>
+    setOpen((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
 
   return (
-    <section id="experience" className="section-padding bg-cream-dark">
-      <div className="max-w-7xl mx-auto px-6 md:px-10">
-
-        <AnimatedSection>
-          <p className="font-sans text-xs tracking-[0.3em] uppercase text-gold mb-6 gold-line">
-            {t.experience.label}
-          </p>
-          <h2
-            className="font-serif font-light text-ink mb-20"
-            style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}
-          >
-            {t.experience.title}
-          </h2>
-        </AnimatedSection>
-
-        {/* Timeline */}
-        <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-0 top-0 bottom-0 w-px bg-gold/20 hidden md:block" />
-
-          <div className="space-y-0">
-            {t.experience.entries.map((entry, i) => (
-              <AnimatedSection key={i} delay={i * 0.05}>
-                <div className="relative md:pl-12">
-                  {/* Timeline dot */}
-                  <motion.div
-                    className="absolute left-0 top-6 w-2 h-2 rounded-full border border-gold bg-cream hidden md:block"
-                    style={{ transform: 'translateX(-3.5px)' }}
-                    whileInView={{ scale: [0, 1.3, 1] }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.05 + 0.2 }}
-                  />
-
-                  {/* Entry card */}
-                  <button
-                    className="w-full text-left py-8 border-b border-gold/15 group"
-                    onClick={() => setExpanded(expanded === i ? null : i)}
-                  >
-                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-2">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          <h3 className="font-serif text-xl font-light text-ink group-hover:text-gold transition-colors duration-300">
-                            {entry.role}
-                          </h3>
-                        </div>
-                        <p className="font-sans text-sm text-muted">
-                          {entry.company} · {entry.location}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <span className="font-sans text-xs tracking-wider text-muted whitespace-nowrap">
-                          {entry.period}
-                        </span>
-                        <motion.span
-                          animate={{ rotate: expanded === i ? 45 : 0 }}
-                          transition={{ duration: 0.3 }}
-                          className="text-gold text-lg leading-none font-light flex-shrink-0"
-                        >
-                          +
-                        </motion.span>
-                      </div>
-                    </div>
-
-                    <AnimatePresence>
-                      {expanded === i && (
-                        <motion.div
-                          initial={prefersReducedMotion ? {} : { height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                          className="overflow-hidden"
-                        >
-                          <p className="font-sans font-light text-ink-light leading-relaxed mt-4 max-w-2xl text-sm">
-                            {entry.description}
-                          </p>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </button>
-                </div>
-              </AnimatedSection>
-            ))}
-          </div>
+    <section id="experience" aria-labelledby="experience-title" className="section bg-cream">
+      <div className="container-page">
+        <SectionHeader
+          id="experience-title"
+          eyebrow={experience.eyebrow}
+          title={experience.title}
+          lead={experience.lead}
+        />
+        <div className="mt-16 space-y-20 lg:mt-20">
+          {experience.groups.map((group) => (
+            <Group key={group.id} group={group} open={open} toggle={toggle} ui={ui} />
+          ))}
         </div>
-
+        <NextLink href="#projects" label={experience.next} />
       </div>
     </section>
+  )
+}
+
+interface GroupProps {
+  group: ExperienceGroup
+  open: Set<string>
+  toggle: (id: string) => void
+  ui: UiStrings
+}
+
+function Group({ group, open, toggle, ui }: GroupProps) {
+  const ref = useRef<HTMLOListElement>(null)
+  const reduce = useReducedMotion()
+  // The gold line draws itself as the reader scrolls through the group.
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 75%', 'end 60%'] })
+
+  return (
+    <div className="grid gap-x-16 gap-y-8 lg:grid-cols-12">
+      <div className="lg:col-span-3">
+        <Reveal className="lg:sticky lg:top-[calc(var(--header-h)+2.5rem)]">
+          <h3 className="eyebrow">{group.title}</h3>
+        </Reveal>
+      </div>
+      <ol ref={ref} className="relative lg:col-span-9">
+        <span aria-hidden className="absolute bottom-3 left-[5px] top-3 w-px bg-gold/30" />
+        <motion.span
+          aria-hidden
+          style={{ scaleY: reduce ? 1 : scrollYProgress }}
+          className="absolute bottom-3 left-[5px] top-3 w-px origin-top bg-gold"
+        />
+        {group.entries.map((entry, i) => {
+          const isOpen = open.has(entry.id)
+          const detailsId = `${entry.id}-details`
+          return (
+            <li key={entry.id} className="relative pb-14 pl-10 last:pb-0 md:pl-14">
+              <span
+                aria-hidden
+                className="absolute left-0 top-[0.35rem] h-[11px] w-[11px] rounded-full border border-gold bg-cream"
+              />
+              <Reveal index={i % 2}>
+                <p className="eyebrow">{entry.period}</p>
+                <h4 className="mt-3 text-[clamp(1.625rem,2.6vw,2.125rem)]">{entry.title}</h4>
+                <p className="mt-1 text-ink-muted">
+                  {entry.company}, {entry.location}
+                </p>
+                <p className="mt-4 max-w-measure">{entry.summary}</p>
+
+                {entry.details.length > 0 && (
+                  <>
+                    <button
+                      type="button"
+                      aria-expanded={isOpen}
+                      aria-controls={detailsId}
+                      onClick={() => toggle(entry.id)}
+                      className="mt-4 inline-flex min-h-[44px] items-center gap-2 text-sm font-medium text-gold-text"
+                    >
+                      <span className="link-underline">{isOpen ? ui.hideDetails : ui.details}</span>
+                      <span
+                        aria-hidden
+                        className={`inline-block text-base transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`}
+                      >
+                        +
+                      </span>
+                    </button>
+                    <ul id={detailsId} hidden={!isOpen} className="reveal-in mt-2 max-w-measure space-y-2.5 text-ink-muted">
+                      {entry.details.map((d) => (
+                        <li key={d} className="relative pl-6">
+                          <span aria-hidden className="absolute left-0 top-[0.8em] h-px w-3 bg-gold" />
+                          {d}
+                        </li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </Reveal>
+            </li>
+          )
+        })}
+      </ol>
+    </div>
   )
 }

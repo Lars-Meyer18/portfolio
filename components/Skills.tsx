@@ -1,78 +1,54 @@
-'use client'
+import type { SkillItem, Skills as SkillsContent } from '@/content/schema'
+import SectionHeader from './ui/SectionHeader'
+import Reveal from './ui/Reveal'
+import NextLink from './ui/NextLink'
 
-import { useLanguage } from '@/lib/LanguageContext'
-import AnimatedSection from './AnimatedSection'
-
-export default function Skills() {
-  const { t } = useLanguage()
-
+export default function Skills({ skills }: { skills: SkillsContent }) {
   return (
-    <section id="skills" className="section-padding bg-cream-dark">
-      <div className="max-w-7xl mx-auto px-6 md:px-10">
+    <section id="skills" aria-labelledby="skills-title" className="section bg-cream">
+      <div className="container-page">
+        <SectionHeader id="skills-title" eyebrow={skills.eyebrow} title={skills.title} lead={skills.lead} />
 
-        <AnimatedSection>
-          <p className="font-sans text-xs tracking-[0.3em] uppercase text-gold mb-6 gold-line">
-            {t.skills.label}
-          </p>
-          <h2
-            className="font-serif font-light text-ink mb-20"
-            style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)' }}
-          >
-            {t.skills.title}
-          </h2>
-        </AnimatedSection>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {t.skills.categories.map((category, ci) => (
-            <AnimatedSection key={category.name} delay={ci * 0.1}>
-              <div>
-                <h3 className="font-sans text-xs tracking-[0.2em] uppercase text-gold mb-8 pb-4 border-b border-gold/20">
-                  {category.name}
-                </h3>
-                <ul className="space-y-4">
-                  {category.items.map((item, ii) => (
-                    <li key={item.label} className="flex flex-col gap-1">
-                      <div className="flex items-center justify-between">
-                        <span className="font-sans text-sm text-ink font-light">{item.label}</span>
-                        {item.level && (
-                          <span className="font-sans text-xs text-muted">{item.level}</span>
-                        )}
-                      </div>
-                      {!item.level && (
-                        <div className="h-px bg-gold/20 w-full mt-1" />
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </AnimatedSection>
+        {/* Desktop: three columns of two groups each, filled column by column */}
+        <div className="mt-16 grid gap-x-14 gap-y-14 md:grid-cols-2 lg:grid-flow-col lg:grid-cols-3 lg:grid-rows-2">
+          {skills.groups.map((group, i) => (
+            <Reveal key={group.id} index={i % 3}>
+              <h3 id={group.id} className="border-b border-gold/50 pb-3 text-[1.75rem]">
+                {group.title}
+              </h3>
+              <ul aria-labelledby={group.id} className="mt-5 space-y-3">
+                {group.items.map((item) => (
+                  <li key={item.label} className="flex items-baseline justify-between gap-4">
+                    <span>{item.label}</span>
+                    {item.level && <Level item={item} scale={skills.levelScale} />}
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
           ))}
         </div>
 
-        {/* Bottom statement */}
-        <AnimatedSection delay={0.4} className="mt-24 pt-12 border-t border-gold/20">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-            <p
-              className="font-serif font-light text-ink leading-tight max-w-lg"
-              style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)' }}
-            >
-              {t.skills.label === 'Kompetenzen'
-                ? 'Bereit, vom ersten Tag an einen Beitrag zu leisten.'
-                : 'Ready to contribute from day one.'}
-            </p>
-            <a
-              href="https://www.linkedin.com/in/lars-meyer-18022002lm/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center gap-4 font-sans text-sm tracking-wider uppercase text-gold border border-gold/40 px-8 py-4 hover:bg-gold hover:text-cream transition-all duration-300"
-            >
-              LinkedIn
-              <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-            </a>
-          </div>
-        </AnimatedSection>
-
+        <NextLink href="#beyond" label={skills.next} />
       </div>
     </section>
+  )
+}
+
+function Level({ item, scale }: { item: SkillItem; scale: string }) {
+  return (
+    <span className="flex shrink-0 items-center gap-3 text-sm text-ink-muted">
+      {item.levelText}
+      <span aria-hidden className="flex gap-1">
+        {[1, 2, 3, 4].map((n) => (
+          <span
+            key={n}
+            className={`h-1.5 w-1.5 rounded-full ${n <= item.level! ? 'bg-gold-text' : 'border border-gold'}`}
+          />
+        ))}
+      </span>
+      <span className="sr-only">
+        ({item.level} {scale})
+      </span>
+    </span>
   )
 }
