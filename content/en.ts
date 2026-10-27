@@ -377,7 +377,7 @@ export const en = {
         items: [
           { label: 'Excel', level: 3, levelText: 'advanced' },
           { label: 'MS Office', level: 3, levelText: 'advanced' },
-          { label: 'Python and Jupyter', level: 2, levelText: 'basic' },
+          { label: 'Python and Jupyter', level: 2, levelText: 'proficient' },
           { label: 'AI-assisted development' },
         ],
       },
@@ -385,10 +385,10 @@ export const en = {
         id: 'skills-software',
         title: 'Industry software',
         items: [
-          { label: 'Abacus', level: 3, levelText: 'proficient' },
-          { label: 'Bexio', level: 3, levelText: 'proficient' },
-          { label: 'PROBbase', level: 3, levelText: 'proficient' },
-          { label: 'RimoR5', level: 3, levelText: 'proficient' },
+          { label: 'Abacus', level: 3, levelText: 'advanced' },
+          { label: 'Bexio', level: 3, levelText: 'advanced' },
+          { label: 'PROBbase', level: 3, levelText: 'advanced' },
+          { label: 'RimoR5', level: 3, levelText: 'advanced' },
         ],
       },
       {
