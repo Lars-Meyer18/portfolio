@@ -2,7 +2,7 @@
 // English content drift apart or break the writing rules in the briefing.
 import { de } from '../content/de'
 import { en } from '../content/en'
-import { colors, contrastPairs } from '../design/tokens'
+import { contrastPairs, palettes } from '../design/tokens'
 
 type Json = unknown
 const errors: string[] = []
@@ -115,10 +115,12 @@ function contrast(fg: string, bg: string) {
 }
 
 const contrastReport: string[] = []
-for (const [fg, bg] of contrastPairs) {
-  const ratio = contrast(colors[fg], colors[bg])
-  contrastReport.push(`${fg} on ${bg}: ${ratio.toFixed(2)}:1`)
-  if (ratio < 4.5) errors.push(`contrast ${fg} on ${bg} is ${ratio.toFixed(2)}:1 (needs 4.5:1)`)
+for (const [mode, palette] of Object.entries(palettes)) {
+  for (const [fg, bg] of contrastPairs) {
+    const ratio = contrast(palette[fg], palette[bg])
+    contrastReport.push(`${mode}: ${fg} on ${bg}: ${ratio.toFixed(2)}:1`)
+    if (ratio < 4.5) errors.push(`contrast (${mode}) ${fg} on ${bg} is ${ratio.toFixed(2)}:1 (needs 4.5:1)`)
+  }
 }
 
 // ---------------------------------------------------------------- run

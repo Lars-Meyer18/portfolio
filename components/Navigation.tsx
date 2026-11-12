@@ -93,7 +93,7 @@ export default function Navigation({ locale, nav, ui }: Props) {
           <span
             key={l}
             aria-current="true"
-            className="rounded-full bg-cream px-2.5 py-1 text-ink shadow-[0_1px_3px_rgba(10,10,10,0.14)]"
+            className="rounded-full bg-cream px-2.5 py-1 text-ink shadow-[0_1px_3px_rgba(0,0,0,0.14)] dark:bg-ink/[0.2]"
           >
             {l.toUpperCase()}
           </span>

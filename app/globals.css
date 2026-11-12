@@ -2,13 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Colour variables (--cream, --ink, ...) come from design/tokens.ts via the
+   Tailwind plugin, in a light and a dark palette. */
 :root {
-  --cream: #FAF8F5;
-  --sand: #F2EDE6;
-  --ink: #0A0A0A;
-  --ink-muted: #4A4744;
-  --gold: #C9A96E;
-  --gold-text: #7D5F33;
+  color-scheme: light dark;
+  --edge-shade: rgb(0 0 0 / 0.06);
+  --tile-shadow: rgb(0 0 0 / 0.3);
   --header-h: 52px;
   --radius-tile: 28px;
   --radius-card: 22px;
@@ -19,9 +18,16 @@
     Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --edge-shade: rgb(0 0 0 / 0.5);
+    --tile-shadow: rgb(0 0 0 / 0.7);
+  }
+}
+
 @layer base {
   html {
-    background-color: var(--cream);
+    background-color: rgb(var(--cream));
     scroll-padding-top: calc(var(--header-h) + 24px);
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
@@ -33,10 +39,11 @@
     }
   }
 
-  /* Body copy: 17 px with comfortable leading and tracking near zero. */
+  /* Body copy: 17 px with comfortable leading and tracking near zero. The
+     colour transition eases the switch when the system changes theme. */
   body {
-    color: var(--ink);
-    background-color: var(--cream);
+    color: rgb(var(--ink));
+    background-color: rgb(var(--cream));
     font-family: var(--font-system);
     font-size: 1.0625rem;
     line-height: 1.47;
@@ -44,6 +51,9 @@
     font-optical-sizing: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition:
+      background-color 0.4s ease,
+      color 0.4s ease;
   }
 
   /* Display serif: tracking tightens and leading shrinks as size grows. */
@@ -82,18 +92,18 @@
   }
 
   ::selection {
-    background-color: rgba(201, 169, 110, 0.35);
-    color: var(--ink);
+    background-color: rgb(var(--gold) / 0.35);
+    color: rgb(var(--ink));
   }
 
   :focus-visible {
-    outline: 2px solid var(--gold-text);
+    outline: 2px solid rgb(var(--gold-text));
     outline-offset: 3px;
     border-radius: 6px;
   }
 
-  .bg-ink :focus-visible {
-    outline-color: var(--gold);
+  .surface-feature :focus-visible {
+    outline-color: rgb(var(--gold));
   }
 }
 
@@ -124,11 +134,7 @@
     line-height: 1.35;
     letter-spacing: -0.005em;
     font-variant-numeric: tabular-nums;
-    color: var(--gold-text);
-  }
-
-  .bg-ink .eyebrow {
-    color: var(--gold);
+    color: rgb(var(--gold-text));
   }
 
   .section-title {
@@ -142,7 +148,7 @@
     font-size: clamp(1.1875rem, 1.7vw, 1.4375rem);
     line-height: 1.38;
     letter-spacing: 0.002em;
-    color: var(--ink-muted);
+    color: rgb(var(--ink-muted));
     max-width: 52ch;
   }
 
@@ -154,23 +160,40 @@
     font-size: 0.8125rem;
     line-height: 1.35;
     letter-spacing: 0.005em;
-    background-color: rgba(125, 95, 51, 0.09);
-    color: var(--ink-muted);
+    background-color: rgb(var(--gold-text) / 0.1);
+    color: rgb(var(--ink-muted));
   }
 
-  .bg-ink .chip {
-    background-color: rgba(250, 248, 245, 0.1);
-    color: rgba(250, 248, 245, 0.85);
+  /* The one dark surface (featured project). In dark mode it lifts slightly
+     off the page and gets a faint gold edge so it still stands apart. */
+  .surface-feature {
+    background-color: rgb(var(--feature));
+    color: rgb(var(--on-feature));
+  }
+
+  .surface-feature .eyebrow {
+    color: rgb(var(--gold));
+  }
+
+  .surface-feature .chip {
+    background-color: rgb(var(--on-feature) / 0.1);
+    color: rgb(var(--on-feature) / 0.85);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .surface-feature {
+      box-shadow: inset 0 0 0 1px rgb(var(--gold) / 0.22);
+    }
   }
 
   /* Tiles replace hairline borders. On sand sections they flip to cream. */
   .tile {
-    background-color: var(--sand);
+    background-color: rgb(var(--sand));
     border-radius: var(--radius-tile);
   }
 
   .bg-sand .tile {
-    background-color: var(--cream);
+    background-color: rgb(var(--cream));
   }
 
   .tile-interactive {
@@ -182,7 +205,7 @@
   @media (hover: hover) {
     .tile-interactive:hover {
       transform: scale(1.012);
-      box-shadow: 0 24px 48px -28px rgba(10, 10, 10, 0.3);
+      box-shadow: 0 24px 48px -28px var(--tile-shadow);
     }
   }
 
@@ -191,14 +214,13 @@
     transition: transform 0.1s ease-out;
   }
 
-  .press:active,
-  .tile-interactive:active {
+  .press:active {
     transform: scale(0.97);
-    transition-duration: 0.1s;
   }
 
   .tile-interactive:active {
     transform: scale(0.985);
+    transition-duration: 0.1s;
   }
 
   .btn-pill {
@@ -214,13 +236,13 @@
   }
 
   .btn-primary {
-    background-color: var(--ink);
-    color: var(--cream);
+    background-color: rgb(var(--ink));
+    color: rgb(var(--cream));
   }
 
   @media (hover: hover) {
     .btn-primary:hover {
-      background-color: #2b2926;
+      background-color: rgb(var(--ink) / 0.84);
     }
   }
 
@@ -229,7 +251,7 @@
     align-items: center;
     gap: 0.3em;
     font-weight: 500;
-    color: var(--gold-text);
+    color: rgb(var(--gold-text));
   }
 
   .link-chevron .chev {
@@ -249,7 +271,7 @@
 
   /* Translucent material for floating chrome; content scrolls underneath. */
   .material {
-    background-color: rgba(250, 248, 245, 0.72);
+    background-color: rgb(var(--cream) / 0.72);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     backdrop-filter: saturate(180%) blur(20px);
   }
@@ -262,7 +284,7 @@
     inset-inline: 0;
     top: 100%;
     height: 14px;
-    background: linear-gradient(to bottom, rgba(10, 10, 10, 0.06), transparent);
+    background: linear-gradient(to bottom, var(--edge-shade), transparent);
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
@@ -283,13 +305,13 @@
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .material {
-    background-color: rgba(250, 248, 245, 0.97);
+    background-color: rgb(var(--cream) / 0.97);
   }
 }
 
 @media (prefers-reduced-transparency: reduce) {
   .material {
-    background-color: var(--cream);
+    background-color: rgb(var(--cream));
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
   }
@@ -297,15 +319,15 @@
 
 @media (prefers-contrast: more) {
   .material {
-    background-color: var(--cream);
+    background-color: rgb(var(--cream));
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
-    box-shadow: 0 1px 0 var(--ink);
+    box-shadow: 0 1px 0 rgb(var(--ink));
   }
 
   .tile,
   .chip {
-    box-shadow: inset 0 0 0 1px var(--ink-muted);
+    box-shadow: inset 0 0 0 1px rgb(var(--ink-muted));
   }
 }
 

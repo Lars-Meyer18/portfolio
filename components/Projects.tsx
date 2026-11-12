@@ -151,16 +151,16 @@ function Featured({ project, labels }: { project: ResolvedProject; labels: Label
   return (
     <div
       id={`project-${project.slug}`}
-      className="-mx-5 mt-14 bg-ink px-5 py-16 text-cream md:mx-0 md:rounded-tile md:px-12 md:py-20 lg:mt-20 lg:px-16"
+      className="surface-feature -mx-5 mt-14 px-5 py-16 md:mx-0 md:rounded-tile md:px-12 md:py-20 lg:mt-20 lg:px-16"
     >
       <div className="grid gap-x-16 gap-y-12 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <Reveal className="lg:sticky lg:top-[calc(var(--header-h)+3rem)]">
             <p className="eyebrow">{project.eyebrow}</p>
-            <h3 className="mt-4 hyphens-auto text-[clamp(2rem,2.7vw,2.5rem)] leading-[1.06] tracking-[-0.02em] text-cream">
+            <h3 className="mt-4 hyphens-auto text-[clamp(2rem,2.7vw,2.5rem)] leading-[1.06] tracking-[-0.02em]">
               {project.title}
             </h3>
-            <div className="text-cream/85">
+            <div className="text-on-feature/85">
               <Meta project={project} labels={labels} />
             </div>
             <Tags tags={project.tags} />
@@ -170,9 +170,9 @@ function Featured({ project, labels }: { project: ResolvedProject; labels: Label
           {caseSteps.map((step, i) =>
             project[step] ? (
               <Reveal key={step} index={i % 2}>
-                <div className="border-t border-cream/15 pt-6">
+                <div className="border-t border-on-feature/15 pt-6">
                   <h4 className="eyebrow">{labels[step]}</h4>
-                  <p className="mt-3 max-w-measure text-[1.125rem] leading-[1.55] text-cream/85">{project[step]}</p>
+                  <p className="mt-3 max-w-measure text-[1.125rem] leading-[1.55] text-on-feature/85">{project[step]}</p>
                 </div>
               </Reveal>
             ) : null,
@@ -267,7 +267,7 @@ function Sheet({ project, labels, ui, onClose }: SheetProps) {
   return (
     <div className="fixed inset-0 z-[60]">
       <m.div
-        className="absolute inset-0 bg-ink/35"
+        className="absolute inset-0 bg-black/40"
         onClick={onClose}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -289,7 +289,8 @@ function Sheet({ project, labels, ui, onClose }: SheetProps) {
         dragMomentum={false}
         dragTransition={snapBack}
         onDragEnd={onDragEnd}
-        className={`absolute flex flex-col overflow-hidden bg-cream shadow-[0_30px_80px_-20px_rgba(10,10,10,0.45)] ${
+        // In dark mode the sheet is the lighter, elevated surface, as on iOS.
+        className={`absolute flex flex-col overflow-hidden bg-cream shadow-[0_30px_80px_-20px_rgba(0,0,0,0.45)] dark:bg-sand ${
           compact
             ? 'inset-x-0 bottom-0 h-[92svh] rounded-t-[22px]'
             : 'bottom-3 right-3 top-3 w-[min(36rem,calc(100%-1.5rem))] rounded-tile'

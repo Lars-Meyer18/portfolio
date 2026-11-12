@@ -5,6 +5,7 @@ import { serif, serifItalic } from '../fonts'
 import { getContent, isLocale, locales } from '@/content'
 import { SITE_URL } from '@/content/flags'
 import MotionProvider from '@/components/MotionProvider'
+import { palettes } from '@/design/tokens'
 
 export const dynamicParams = false
 
@@ -13,7 +14,10 @@ export function generateStaticParams() {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#FAF8F5',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: palettes.light.cream },
+    { media: '(prefers-color-scheme: dark)', color: palettes.dark.cream },
+  ],
 }
 
 export async function generateMetadata({

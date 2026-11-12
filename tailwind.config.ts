@@ -1,7 +1,19 @@
 import type { Config } from 'tailwindcss'
-import { colors } from './design/tokens'
+import plugin from 'tailwindcss/plugin'
+import { palettes, toChannels, type ColorToken } from './design/tokens'
+
+const tokens = Object.keys(palettes.light) as ColorToken[]
+
+// Every colour reads from a CSS variable, so opacity modifiers like
+// `bg-ink/10` keep working and the whole palette can switch with the system.
+const colors = Object.fromEntries(tokens.map((t) => [t, `rgb(var(--${t}) / <alpha-value>)`]))
+
+const vars = (palette: Record<ColorToken, string>) =>
+  Object.fromEntries(tokens.map((t) => [`--${t}`, toChannels(palette[t])]))
 
 const config: Config = {
+  // Dark mode follows the visitor's system setting.
+  darkMode: 'media',
   content: [
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
@@ -27,7 +39,14 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(({ addBase }) => {
+      addBase({
+        ':root': vars(palettes.light),
+        '@media (prefers-color-scheme: dark)': { ':root': vars(palettes.dark) },
+      })
+    }),
+  ],
 }
 
 export default config
