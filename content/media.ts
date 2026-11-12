@@ -29,7 +29,7 @@ export const media = {
   'p2-team': { kind: 'photo', src: '/images/projects/p2-team.jpg', width: 2400, height: 1350, people: true },
   'p2-room': { kind: 'photo', src: '/images/projects/p2-room.jpg', width: 1350, height: 2400, people: true, position: 'center 55%' },
   'p1-design': { kind: 'photo', src: '/images/projects/p1-design.jpg', width: 1128, height: 2004, fit: 'contain' },
-  'p1-wall': { kind: 'photo', src: '/images/projects/p1-wall.jpg', width: 1800, height: 2400, position: 'center 45%' },
+  'p1-wall': { kind: 'photo', src: '/images/projects/p1-wall.jpg', width: 1800, height: 2400, position: 'center 52%' },
   'velo-poster': { kind: 'poster', title: 'Urban. Swiss. Rapide.', subtitle: 'Made to move you' },
 } satisfies Record<string, Photo | Poster>
 

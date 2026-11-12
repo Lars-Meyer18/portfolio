@@ -78,7 +78,7 @@ export default function Projects({ projects, ui }: Props) {
                       image={p.images[0]}
                       sizes="(min-width: 1024px) 24rem, (min-width: 768px) 45vw, 84vw"
                       quality={85}
-                      className="aspect-[16/10] shrink-0"
+                      className="aspect-[16/9] shrink-0"
                     />
                   )}
                   <div className="flex flex-1 flex-col p-7 md:p-8">
@@ -170,7 +170,7 @@ function Featured({ project, labels, ui }: { project: ResolvedProject; labels: L
           <Gallery
             images={project.images}
             ui={ui}
-            aspect="aspect-[3/2] lg:aspect-[16/9]"
+            aspect="aspect-[16/9]"
             sizes="(min-width: 1280px) 68rem, (min-width: 768px) 90vw, 100vw"
           />
         </Reveal>
@@ -206,13 +206,6 @@ function Featured({ project, labels, ui }: { project: ResolvedProject; labels: L
 }
 
 /* ---------------------------------------------------------------- sheet */
-
-// Wide group photos (16:9) would lose the people at the edges in a 4:3 frame,
-// so a gallery that contains one gets a 16:9 frame instead.
-function galleryAspect(images: ResolvedProject['images']) {
-  const wide = images.some((img) => img.kind === 'photo' && img.width / img.height > 1.6)
-  return wide ? 'aspect-[16/9]' : 'aspect-[4/3]'
-}
 
 // Apple's momentum projection: where a flick would come to rest if it kept
 // decelerating like a scroll view. Used to decide whether to dismiss.
@@ -352,7 +345,7 @@ function Sheet({ project, labels, ui, onClose }: SheetProps) {
               <Gallery
                 images={project.images}
                 ui={ui}
-                aspect={galleryAspect(project.images)}
+                aspect="aspect-[16/9]"
                 sizes="(min-width: 768px) 34rem, 100vw"
               />
             </div>
