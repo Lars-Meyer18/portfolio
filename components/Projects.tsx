@@ -207,6 +207,13 @@ function Featured({ project, labels, ui }: { project: ResolvedProject; labels: L
 
 /* ---------------------------------------------------------------- sheet */
 
+// Wide group photos (16:9) would lose the people at the edges in a 4:3 frame,
+// so a gallery that contains one gets a 16:9 frame instead.
+function galleryAspect(images: ResolvedProject['images']) {
+  const wide = images.some((img) => img.kind === 'photo' && img.width / img.height > 1.6)
+  return wide ? 'aspect-[16/9]' : 'aspect-[4/3]'
+}
+
 // Apple's momentum projection: where a flick would come to rest if it kept
 // decelerating like a scroll view. Used to decide whether to dismiss.
 function projectMomentum(velocity: number, decelerationRate = 0.998) {
@@ -342,7 +349,12 @@ function Sheet({ project, labels, ui, onClose }: SheetProps) {
         <div className="flex-1 overflow-y-auto overscroll-contain px-6 pb-16 md:px-10">
           {project.images.length > 0 && (
             <div className="mb-8">
-              <Gallery images={project.images} ui={ui} aspect="aspect-[4/3]" sizes="(min-width: 768px) 34rem, 100vw" />
+              <Gallery
+                images={project.images}
+                ui={ui}
+                aspect={galleryAspect(project.images)}
+                sizes="(min-width: 768px) 34rem, 100vw"
+              />
             </div>
           )}
           <p className="eyebrow">{project.eyebrow}</p>
