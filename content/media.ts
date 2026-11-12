@@ -24,11 +24,8 @@ export interface Poster {
 export const media = {
   'p4-team': { kind: 'photo', src: '/images/projects/p4-team.jpg', width: 2400, height: 1800, people: true, position: 'center 35%' },
   'p4-showroom': { kind: 'photo', src: '/images/projects/p4-showroom.jpg', width: 2400, height: 1350 },
-  'p4-mixer': { kind: 'photo', src: '/images/projects/p4-mixer.jpg', width: 2400, height: 1600 },
-  'p4-welcome': { kind: 'photo', src: '/images/projects/p4-welcome.jpg', width: 2400, height: 1601 },
+  'p4-work': { kind: 'photo', src: '/images/projects/p4-work.jpg', width: 2400, height: 1350, people: true },
   'p2-office': { kind: 'photo', src: '/images/projects/p2-office.jpg', width: 1350, height: 2400, position: 'center 42%' },
-  'p2-logo': { kind: 'photo', src: '/images/projects/p2-logo.jpg', width: 1221, height: 914 },
-  'p2-workspace': { kind: 'photo', src: '/images/projects/p2-workspace.jpg', width: 998, height: 750 },
   'p2-team': { kind: 'photo', src: '/images/projects/p2-team.jpg', width: 2400, height: 1350, people: true },
   'p2-room': { kind: 'photo', src: '/images/projects/p2-room.jpg', width: 1350, height: 2400, people: true, position: 'center 55%' },
   'p1-design': { kind: 'photo', src: '/images/projects/p1-design.jpg', width: 1128, height: 2004, fit: 'contain' },

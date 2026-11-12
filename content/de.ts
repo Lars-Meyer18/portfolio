@@ -240,8 +240,7 @@ export const de = {
         images: [
           { id: 'p4-team', alt: 'Das Projektteam mit Vertretern der Willy A. Bachofen AG vor dem WAB-Logo' },
           { id: 'p4-showroom', alt: 'Showroom der WAB-Group mit einem Mischgerät und Informationstafeln' },
-          { id: 'p4-mixer', alt: 'Mischgerät im Showroom der WAB-Group vor der Informationswand zum Mischen' },
-          { id: 'p4-welcome', alt: 'Begrüssungsbildschirm der Willy A. Bachofen AG neben der Weltkarte der WAB-Group' },
+          { id: 'p4-work', alt: 'Zwei Teammitglieder bei der Arbeit in einem Projektraum bei der WAB-Group' },
         ],
       },
       {
@@ -264,8 +263,6 @@ export const de = {
         tags: ['Energiewirtschaft', 'Strategische Analyse', 'Smart Grid', 'Regulierung'],
         images: [
           { id: 'p2-office', alt: 'Empfangsbereich der Helltec Engineering AG mit Firmenlogo' },
-          { id: 'p2-logo', alt: 'Leuchtendes Helltec-Logo mit dem Jubiläumsschriftzug «20 Years»' },
-          { id: 'p2-workspace', alt: 'Arbeitsplatz im Sitzungszimmer der Helltec Engineering AG' },
           { id: 'p2-team', alt: 'Das dreiköpfige Projektteam am Tisch bei Helltec' },
           { id: 'p2-room', alt: 'Zwei Teammitglieder bei der Arbeit im Sitzungszimmer' },
         ],

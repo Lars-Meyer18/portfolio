@@ -14,10 +14,10 @@ export const flags = {
   // Draft projects only appear in Vercel preview builds and local development.
   showDraftProjects:
     process.env.VERCEL_ENV === 'preview' || process.env.NODE_ENV === 'development',
-  // Photos showing identifiable people (teammates, client staff) stay off the
-  // site, and out of the public repository (.gitignore), until everyone
-  // pictured has agreed. Set SHOW_PEOPLE_PHOTOS=1 to see them locally.
-  peoplePhotosApproved: false,
+  // Photos showing identifiable people (teammates, client staff). Lars released
+  // the project photos for publication on 12.11.2026. Set to false to hide
+  // them again; SHOW_PEOPLE_PHOTOS=1 still shows them locally.
+  peoplePhotosApproved: true,
   showPeoplePhotosLocally: process.env.SHOW_PEOPLE_PHOTOS === '1',
 }
 

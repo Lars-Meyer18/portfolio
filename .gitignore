@@ -30,9 +30,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# Photos showing teammates and client staff. The repository is public, so these
-# stay local until everyone pictured has agreed (see content/flags.ts).
-/public/images/projects/p2-team.jpg
-/public/images/projects/p2-room.jpg
-/public/images/projects/p4-team.jpg
