@@ -14,6 +14,11 @@ export const flags = {
   // Draft projects only appear in Vercel preview builds and local development.
   showDraftProjects:
     process.env.VERCEL_ENV === 'preview' || process.env.NODE_ENV === 'development',
+  // Photos showing identifiable people (teammates, client staff) stay off the
+  // site, and out of the public repository (.gitignore), until everyone
+  // pictured has agreed. Set SHOW_PEOPLE_PHOTOS=1 to see them locally.
+  peoplePhotosApproved: false,
+  showPeoplePhotosLocally: process.env.SHOW_PEOPLE_PHOTOS === '1',
 }
 
 export const LINKEDIN_URL = 'https://www.linkedin.com/in/lars-meyer-18022002lm/'

@@ -229,6 +229,10 @@ export const en = {
         result:
           'A practical concept with a software-based solution that brings all relevant project costs together and shows a continuous target-versus-actual comparison in a dashboard. Completed to the client’s full satisfaction, with a reference letter from the CEO.',
         tags: ['Scrum', 'Stakeholder interviews', 'Process analysis', 'Controlling', 'Dashboard'],
+        images: [
+          { id: 'p4-team', alt: 'The project team with representatives of Willy A. Bachofen AG in front of the WAB logo' },
+          { id: 'p4-showroom', alt: 'WAB-Group showroom with a mixing machine and information panels' },
+        ],
       },
       {
         id: 'proj-p2',
@@ -247,6 +251,11 @@ export const en = {
           'Analysis of the regulatory framework, technical challenges and key market players, supported by interviews with three Swiss energy suppliers, SWOT analyses and a review of legislative developments in electricity supply.',
         result: 'A solid basis for choosing new business fields.',
         tags: ['Energy industry', 'Strategic analysis', 'Smart grid', 'Regulation'],
+        images: [
+          { id: 'p2-office', alt: 'Reception area of Helltec Engineering AG with the company logo' },
+          { id: 'p2-team', alt: 'The three-person project team at a table at Helltec' },
+          { id: 'p2-room', alt: 'Two team members working in a meeting room' },
+        ],
       },
       {
         id: 'proj-p1',
@@ -261,6 +270,10 @@ export const en = {
         result:
           'Hybrid watches, which combine classic design with smart features, have the greatest potential with younger audiences. From this we derived strategic recommendations for the industry.',
         tags: ['Market analysis', 'Consumer goods', 'Strategy', 'Scoring analysis'],
+        images: [
+          { id: 'p1-design', alt: 'Sketch of a hybrid watch that combines a classic case with a smart dial' },
+          { id: 'p1-wall', alt: 'Lettering “Faire mieux si possible, ce qui est toujours possible” on a dark wall' },
+        ],
       },
       {
         id: 'proj-velorapide',
@@ -270,6 +283,9 @@ export const en = {
         summary: 'A working online shop in three days and five sprints.',
         text: 'During a three-day project week, our team of six used Scrum to build a working online shop for a fictional bike shop. Based on stakeholder analyses, prioritised backlogs and five consecutive sprints, we implemented requirements step by step and presented a working result after each sprint. The focus was not only on the end product but on the entire agile process, including sprint reviews and retrospectives.',
         tags: ['Scrum', 'Agile', 'E-commerce'],
+        images: [
+          { id: 'velo-poster', alt: 'The VeloRapide shop claim “Urban. Swiss. Rapide.”' },
+        ],
       },
     ],
     outlook:
@@ -312,6 +328,7 @@ export const en = {
           'AI & machine learning',
           'Statistics and data analysis',
         ],
+        image: { id: 'edu-fhnw', alt: 'FHNW university building in the evening sun' },
       },
       {
         id: 'edu-topsim',

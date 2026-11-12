@@ -7,6 +7,7 @@ import type { Projects as ProjectsContent, UiStrings } from '@/content/schema'
 import SectionHeader from './ui/SectionHeader'
 import Reveal from './ui/Reveal'
 import NextLink from './ui/NextLink'
+import Media from './ui/Media'
 
 interface Props {
   projects: Omit<ProjectsContent, 'items'> & { items: ResolvedProject[] }
@@ -70,26 +71,35 @@ export default function Projects({ projects, ui }: Props) {
               className="w-[84%] shrink-0 snap-start md:w-auto md:last:odd:col-span-2 lg:last:odd:col-span-1"
             >
               <Reveal index={i} className="h-full">
-                <article id={`project-${p.slug}`} className="tile tile-interactive relative flex h-full flex-col p-7 md:p-8">
-                  <p className="eyebrow">{p.eyebrow}</p>
-                  <h3 id={`${p.id}-title`} className="mt-3 text-[2rem] leading-[1.05] tracking-[-0.015em]">
-                    {p.title}
-                  </h3>
-                  {p.clientDisplay && <p className="mt-2 text-sm text-ink-muted">{p.clientDisplay}</p>}
-                  <p className="mt-4 flex-1 text-ink-muted">{p.summary}</p>
-                  <Tags tags={p.tags} />
-                  <button
-                    type="button"
-                    aria-haspopup="dialog"
-                    aria-describedby={`${p.id}-title`}
-                    onClick={(e) => openSheet(p.slug, e.currentTarget)}
-                    className="link-chevron mt-7 min-h-[44px] self-start after:absolute after:inset-0 after:rounded-tile after:content-['']"
-                  >
-                    <span className="label">{projects.labels.more}</span>
-                    <span aria-hidden className="chev inline-block">
-                      ›
-                    </span>
-                  </button>
+                <article id={`project-${p.slug}`} className="tile tile-interactive relative flex h-full flex-col overflow-hidden">
+                  {p.images[0] && (
+                    <Media
+                      image={p.images[0]}
+                      sizes="(min-width: 1024px) 24rem, (min-width: 768px) 45vw, 84vw"
+                      className="aspect-[16/10] shrink-0"
+                    />
+                  )}
+                  <div className="flex flex-1 flex-col p-7 md:p-8">
+                    <p className="eyebrow">{p.eyebrow}</p>
+                    <h3 id={`${p.id}-title`} className="mt-3 text-[2rem] leading-[1.05] tracking-[-0.015em]">
+                      {p.title}
+                    </h3>
+                    {p.clientDisplay && <p className="mt-2 text-sm text-ink-muted">{p.clientDisplay}</p>}
+                    <p className="mt-4 flex-1 text-ink-muted">{p.summary}</p>
+                    <Tags tags={p.tags} />
+                    <button
+                      type="button"
+                      aria-haspopup="dialog"
+                      aria-describedby={`${p.id}-title`}
+                      onClick={(e) => openSheet(p.slug, e.currentTarget)}
+                      className="link-chevron mt-7 min-h-[44px] self-start after:absolute after:inset-0 after:rounded-tile after:content-['']"
+                    >
+                      <span className="label">{projects.labels.more}</span>
+                      <span aria-hidden className="chev inline-block">
+                        ›
+                      </span>
+                    </button>
+                  </div>
                 </article>
               </Reveal>
             </li>
@@ -153,6 +163,18 @@ function Featured({ project, labels }: { project: ResolvedProject; labels: Label
       id={`project-${project.slug}`}
       className="surface-feature -mx-5 mt-14 px-5 py-16 md:mx-0 md:rounded-tile md:px-12 md:py-20 lg:mt-20 lg:px-16"
     >
+      {project.images.length > 0 && (
+        <Reveal className={`mb-12 grid gap-3 md:mb-16 md:gap-4 ${project.images.length > 1 ? 'md:grid-cols-[1.4fr_1fr]' : ''}`}>
+          {project.images.map((img) => (
+            <Media
+              key={img.id}
+              image={img}
+              sizes="(min-width: 1024px) 40rem, (min-width: 768px) 55vw, 100vw"
+              className="h-60 rounded-card md:h-[24rem]"
+            />
+          ))}
+        </Reveal>
+      )}
       <div className="grid gap-x-16 gap-y-12 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <Reveal className="lg:sticky lg:top-[calc(var(--header-h)+3rem)]">
@@ -318,6 +340,18 @@ function Sheet({ project, labels, ui, onClose }: SheetProps) {
         </div>
 
         <div className="flex-1 overflow-y-auto overscroll-contain px-6 pb-16 md:px-10">
+          {project.images.length > 0 && (
+            <div className="scrollbar-none -mx-6 mb-8 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6 md:-mx-10 md:scroll-px-10 md:px-10">
+              {project.images.map((img) => (
+                <Media
+                  key={img.id}
+                  image={img}
+                  sizes="(min-width: 768px) 30rem, 85vw"
+                  className={`aspect-[4/3] shrink-0 snap-start rounded-card ${project.images.length > 1 ? 'w-[85%]' : 'w-full'}`}
+                />
+              ))}
+            </div>
+          )}
           <p className="eyebrow">{project.eyebrow}</p>
           <h3 id={titleId} className="mt-3 text-[clamp(2.125rem,4vw,2.75rem)] leading-[1.04] tracking-[-0.02em]">
             {project.title}

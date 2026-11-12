@@ -1,3 +1,5 @@
+import type { MediaId } from './media'
+
 export const locales = ['de', 'en'] as const
 export type Locale = (typeof locales)[number]
 
@@ -85,6 +87,13 @@ export interface Experience {
   next: string
 }
 
+// A picture from content/media.ts: the id is the same in both languages,
+// the alt text is translated.
+export interface ImageRef {
+  id: MediaId
+  alt: string
+}
+
 export interface Project {
   id: string
   status: 'live' | 'draft'
@@ -100,6 +109,7 @@ export interface Project {
   result?: string
   text?: string
   tags: string[]
+  images?: ImageRef[]
 }
 
 export interface Projects {
@@ -138,6 +148,7 @@ export interface EducationEntry {
   modules?: string[]
   focusLabel?: string
   focus?: string[]
+  image?: ImageRef
 }
 
 export interface Education {

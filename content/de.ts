@@ -232,6 +232,10 @@ export const de = {
         result:
           'Ein praxisnahes Konzept mit einer softwarebasierten Lösung, die alle relevanten Projektkosten zusammenführt und in einem Dashboard einen laufenden Soll-Ist-Vergleich zeigt. Abgeschlossen zur vollen Zufriedenheit des Auftraggebers, mit Referenzschreiben des CEO.',
         tags: ['Scrum', 'Stakeholder-Interviews', 'Prozessanalyse', 'Controlling', 'Dashboard'],
+        images: [
+          { id: 'p4-team', alt: 'Das Projektteam mit Vertretern der Willy A. Bachofen AG vor dem WAB-Logo' },
+          { id: 'p4-showroom', alt: 'Showroom der WAB-Group mit einem Mischgerät und Informationstafeln' },
+        ],
       },
       {
         id: 'proj-p2',
@@ -251,6 +255,11 @@ export const de = {
           'Analyse der regulatorischen Rahmenbedingungen, technischen Herausforderungen und relevanten Marktteilnehmer, gestützt auf Interviews mit drei Schweizer Energieversorgern, SWOT-Analysen und die Auswertung gesetzlicher Entwicklungen in der Stromversorgung.',
         result: 'Fundierte Entscheidungsgrundlagen für die Wahl neuer Geschäftsfelder.',
         tags: ['Energiewirtschaft', 'Strategische Analyse', 'Smart Grid', 'Regulierung'],
+        images: [
+          { id: 'p2-office', alt: 'Empfangsbereich der Helltec Engineering AG mit Firmenlogo' },
+          { id: 'p2-team', alt: 'Das dreiköpfige Projektteam am Tisch bei Helltec' },
+          { id: 'p2-room', alt: 'Zwei Teammitglieder bei der Arbeit im Sitzungszimmer' },
+        ],
       },
       {
         id: 'proj-p1',
@@ -266,6 +275,10 @@ export const de = {
         result:
           'Hybriduhren, die klassisches Design mit smarten Funktionen verbinden, haben bei jüngeren Zielgruppen das grösste Potenzial. Daraus haben wir strategische Empfehlungen für die Branche abgeleitet.',
         tags: ['Marktanalyse', 'Konsumgüter', 'Strategie', 'Nutzwertanalyse'],
+        images: [
+          { id: 'p1-design', alt: 'Skizze einer Hybriduhr, die ein klassisches Gehäuse mit einem smarten Zifferblatt verbindet' },
+          { id: 'p1-wall', alt: 'Schriftzug «Faire mieux si possible, ce qui est toujours possible» an einer dunklen Wand' },
+        ],
       },
       {
         id: 'proj-velorapide',
@@ -275,6 +288,9 @@ export const de = {
         summary: 'Ein funktionsfähiger Onlineshop in drei Tagen und fünf Sprints.',
         text: 'Im Rahmen einer dreitägigen Projektwoche haben wir nach der Scrum-Methode in einem sechsköpfigen Team einen funktionsfähigen Onlineshop für einen fiktiven Fahrradladen aufgebaut. Auf Basis von Stakeholder-Analysen, priorisierten Backlogs und fünf aufeinanderfolgenden Sprints haben wir iterativ Anforderungen umgesetzt und nach jedem Sprint lauffähige Ergebnisse präsentiert. Der Fokus lag nicht nur auf dem Endprodukt, sondern auf dem gesamten agilen Prozess inklusive Sprint-Reviews und Retrospektiven.',
         tags: ['Scrum', 'Agile', 'E-Commerce'],
+        images: [
+          { id: 'velo-poster', alt: 'Claim des VeloRapide-Shops «Urban. Swiss. Rapide.»' },
+        ],
       },
     ],
     outlook:
@@ -316,6 +332,7 @@ export const de = {
           'AI & Machine Learning',
           'Statistik und Datenanalyse',
         ],
+        image: { id: 'edu-fhnw', alt: 'Gebäude der Fachhochschule Nordwestschweiz FHNW in der Abendsonne' },
       },
       {
         id: 'edu-topsim',

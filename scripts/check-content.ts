@@ -37,7 +37,7 @@ function compare(a: Json, b: Json, path: string) {
         languageNeutral.includes(k) ||
         (k === 'value' && typeof va === 'number') ||
         (k === 'status' && (va === 'live' || va === 'draft'))
-      if (neutral && va !== vb) {
+      if (neutral && typeof va !== 'object' && va !== vb) {
         errors.push(`${path}.${k}: "${String(va)}" in DE vs "${String(vb)}" in EN`)
       }
       compare(va, vb, `${path}.${k}`)
