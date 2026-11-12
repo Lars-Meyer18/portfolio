@@ -179,7 +179,7 @@ export const en = {
             company: 'Swiss Armed Forces',
             location: 'Thun',
             period: '07.2021 – 11.2021',
-            summary: 'Basic training, leading a group of seven soldiers in exercises.',
+            summary: 'Basic training as a mechanised infantryman (Panzergrenadier), leading a group of seven soldiers in exercises.',
             details: [],
           },
           {

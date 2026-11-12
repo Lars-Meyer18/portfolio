@@ -182,7 +182,7 @@ export const de = {
             company: 'Schweizer Armee',
             location: 'Thun',
             period: '07.2021 – 11.2021',
-            summary: 'Grundausbildung, in Übungen Führung einer Gruppe von sieben Soldaten.',
+            summary: 'Grundausbildung als Panzergrenadier, in Übungen Führung einer Gruppe von sieben Soldaten.',
             details: [],
           },
           {
