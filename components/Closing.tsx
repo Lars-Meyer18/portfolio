@@ -9,10 +9,9 @@ export default function Closing({ closing }: { closing: ClosingContent }) {
       <section id="contact" aria-labelledby="contact-title" className="section bg-sand">
         <div className="container-page">
           <Reveal>
-            <span aria-hidden className="block h-px w-20 bg-gold" />
             <h2
               id="contact-title"
-              className="mt-10 max-w-[24ch] text-[clamp(2.25rem,4.6vw,3.75rem)] leading-[1.1]"
+              className="max-w-[20ch] text-[clamp(2.5rem,5.4vw,4.5rem)] leading-[1.04] tracking-[-0.022em]"
             >
               {closing.sentence}
             </h2>
@@ -22,20 +21,20 @@ export default function Closing({ closing }: { closing: ClosingContent }) {
               href={LINKEDIN_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group mt-12 inline-flex min-h-[52px] items-center gap-4 border border-ink px-8 text-sm font-medium uppercase tracking-[0.18em] text-ink transition-colors duration-300 hover:bg-ink hover:text-cream"
+              className="btn-pill btn-primary press group mt-10"
             >
               {closing.button}
-              <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
-                →
+              <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
+                ›
               </span>
             </a>
           </Reveal>
         </div>
       </section>
       <footer className="bg-sand">
-        <div className="container-page flex flex-wrap items-center justify-between gap-4 border-t border-ink/10 py-8 text-sm text-ink-muted">
+        <div className="container-page flex flex-wrap items-center justify-between gap-4 border-t border-ink/10 py-6 text-xs text-ink-muted">
           <p>{closing.footer.replace('{year}', String(year))}</p>
-          <a href="#top" className="font-serif text-xl tracking-[0.15em] text-ink hover:text-gold-text">
+          <a href="#top" className="press font-serif text-lg tracking-[0.12em] text-ink">
             <span aria-hidden>LM</span>
             <span className="sr-only">Lars Meyer</span>
           </a>

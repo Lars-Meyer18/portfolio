@@ -80,7 +80,7 @@ function Group({ group, open, toggle, ui }: GroupProps) {
               />
               <Reveal index={i % 2}>
                 <p className="eyebrow">{entry.period}</p>
-                <h4 className="mt-3 text-[clamp(1.625rem,2.6vw,2.125rem)]">{entry.title}</h4>
+                <h4 className="mt-2 text-[clamp(1.75rem,2.8vw,2.25rem)] tracking-[-0.015em]">{entry.title}</h4>
                 <p className="mt-1 text-ink-muted">
                   {entry.company}, {entry.location}
                 </p>
@@ -93,14 +93,15 @@ function Group({ group, open, toggle, ui }: GroupProps) {
                       aria-expanded={isOpen}
                       aria-controls={detailsId}
                       onClick={() => toggle(entry.id)}
-                      className="mt-4 inline-flex min-h-[44px] items-center gap-2 text-sm font-medium text-gold-text"
+                      className="link-chevron press mt-3 min-h-[44px] text-[0.9375rem]"
                     >
-                      <span className="link-underline">{isOpen ? ui.hideDetails : ui.details}</span>
+                      <span className="label">{isOpen ? ui.hideDetails : ui.details}</span>
+                      {/* Disclosure chevron turns down as the details open. */}
                       <span
                         aria-hidden
-                        className={`inline-block text-base transition-transform duration-300 ${isOpen ? 'rotate-45' : ''}`}
+                        className={`inline-block transition-transform duration-300 ease-out ${isOpen ? 'rotate-90' : ''}`}
                       >
-                        +
+                        ›
                       </span>
                     </button>
                     <ul id={detailsId} hidden={!isOpen} className="reveal-in mt-2 max-w-measure space-y-2.5 text-ink-muted">

@@ -55,7 +55,7 @@ export default function Path({ about }: { about: About }) {
                 {about.chapters.map((c, i) => (
                   <span
                     key={c.id}
-                    className={`absolute inset-0 font-serif text-[7.5rem] leading-none transition-[transform,opacity] duration-700 ease-out ${
+                    className={`absolute inset-0 font-serif text-[7.5rem] leading-none tracking-[-0.03em] transition-[transform,opacity] duration-700 ease-out ${
                       i === active ? 'translate-y-0 opacity-100' : i < active ? '-translate-y-full opacity-0' : 'translate-y-full opacity-0'
                     }`}
                   >
@@ -63,7 +63,7 @@ export default function Path({ about }: { about: About }) {
                   </span>
                 ))}
               </div>
-              <div className="relative mt-8 aspect-[4/5] max-h-[calc(100vh-var(--header-h)-14rem)] overflow-hidden bg-cream">
+              <div className="relative mt-8 aspect-[4/5] max-h-[calc(100vh-var(--header-h)-14rem)] overflow-hidden rounded-tile bg-cream">
                 {uniqueImages.map((key) => {
                   const chapter = about.chapters.find((c) => c.image === key)!
                   const shown = key === activeImage
@@ -108,7 +108,7 @@ export default function Path({ about }: { about: About }) {
                 />
                 <Reveal>
                   {c.image !== 'portrait' && (
-                    <div className="relative mb-8 aspect-[4/3] overflow-hidden lg:hidden">
+                    <div className="relative mb-8 aspect-[4/3] overflow-hidden rounded-card lg:hidden">
                       <Image
                         src={images[c.image]}
                         alt={c.imageAlt}
@@ -120,7 +120,7 @@ export default function Path({ about }: { about: About }) {
                     </div>
                   )}
                   <p className="eyebrow">{c.period}</p>
-                  <h3 className="mt-3 text-[clamp(1.875rem,3.2vw,2.75rem)]">{c.title}</h3>
+                  <h3 className="mt-2 text-[clamp(2rem,3.4vw,3rem)] tracking-[-0.018em]">{c.title}</h3>
                   <p className="mt-5 max-w-measure text-ink-muted">{c.text}</p>
                 </Reveal>
               </li>

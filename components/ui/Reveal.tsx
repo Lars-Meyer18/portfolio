@@ -3,8 +3,6 @@
 import type { ReactNode } from 'react'
 import { m, useReducedMotion } from 'framer-motion'
 
-const ease = [0.22, 1, 0.36, 1] as const
-
 interface Props {
   children: ReactNode
   className?: string
@@ -13,8 +11,8 @@ interface Props {
   id?: string
 }
 
-// Fades content up once when it scrolls into view. With reduced motion the
-// transition runs with zero duration, so content appears immediately.
+// Rises into place once when it scrolls into view, on a critically damped
+// spring (no overshoot). With reduced motion it only cross-fades.
 export default function Reveal({ children, className, index = 0, id }: Props) {
   const reduce = useReducedMotion()
   return (
@@ -24,7 +22,11 @@ export default function Reveal({ children, className, index = 0, id }: Props) {
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '0px 0px -8% 0px' }}
-      transition={reduce ? { duration: 0 } : { duration: 0.7, delay: index * 0.08, ease }}
+      transition={
+        reduce
+          ? { opacity: { duration: 0.25 }, y: { duration: 0 } }
+          : { type: 'spring', bounce: 0, duration: 0.8, delay: index * 0.08 }
+      }
     >
       {children}
     </m.div>

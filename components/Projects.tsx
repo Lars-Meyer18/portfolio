@@ -1,7 +1,7 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, type KeyboardEvent } from 'react'
-import { AnimatePresence, m, useReducedMotion } from 'framer-motion'
+import { useCallback, useEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
+import { AnimatePresence, m, useDragControls, useReducedMotion, type PanInfo } from 'framer-motion'
 import type { ResolvedProject } from '@/content'
 import type { Projects as ProjectsContent, UiStrings } from '@/content/schema'
 import SectionHeader from './ui/SectionHeader'
@@ -22,7 +22,7 @@ export default function Projects({ projects, ui }: Props) {
   const [openSlug, setOpenSlug] = useState<string | null>(null)
   const triggerRef = useRef<HTMLElement | null>(null)
 
-  // Shareable links: #project-<slug> opens the matching panel.
+  // Shareable links: #project-<slug> opens the matching sheet.
   useEffect(() => {
     const sync = () => {
       const match = window.location.hash.match(/^#project-(.+)$/)
@@ -35,13 +35,13 @@ export default function Projects({ projects, ui }: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const openPanel = (slug: string, trigger: HTMLElement) => {
+  const openSheet = (slug: string, trigger: HTMLElement) => {
     triggerRef.current = trigger
     setOpenSlug(slug)
     history.replaceState(null, '', `#project-${slug}`)
   }
 
-  const closePanel = useCallback(() => {
+  const closeSheet = useCallback(() => {
     setOpenSlug(null)
     history.replaceState(null, '', window.location.pathname)
     triggerRef.current?.focus()
@@ -58,32 +58,37 @@ export default function Projects({ projects, ui }: Props) {
           title={projects.title}
           lead={projects.lead}
         />
-      </div>
 
-      {featured && <Featured project={featured} labels={projects.labels} />}
+        {featured && <Featured project={featured} labels={projects.labels} />}
 
-      <div className="container-page">
-        <ul className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {/* Mobile: a swipeable row with native momentum and snap points.
+            Tablet and up: a grid of equal tiles. */}
+        <ul className="scrollbar-none -mx-5 mt-6 flex snap-x snap-mandatory scroll-px-5 gap-4 overflow-x-auto px-5 pb-8 pt-2 md:mx-0 md:mt-6 md:grid md:grid-cols-2 md:gap-5 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-3">
           {cards.map((p, i) => (
-            <li key={p.id} className="md:last:odd:col-span-2 lg:last:odd:col-span-1">
+            <li
+              key={p.id}
+              className="w-[84%] shrink-0 snap-start md:w-auto md:last:odd:col-span-2 lg:last:odd:col-span-1"
+            >
               <Reveal index={i} className="h-full">
-                <article id={`project-${p.slug}`} className="card relative flex h-full flex-col p-7 md:p-8">
+                <article id={`project-${p.slug}`} className="tile tile-interactive relative flex h-full flex-col p-7 md:p-8">
                   <p className="eyebrow">{p.eyebrow}</p>
-                  <h3 id={`${p.id}-title`} className="mt-4 text-[1.875rem] leading-tight">
+                  <h3 id={`${p.id}-title`} className="mt-3 text-[2rem] leading-[1.05] tracking-[-0.015em]">
                     {p.title}
                   </h3>
                   {p.clientDisplay && <p className="mt-2 text-sm text-ink-muted">{p.clientDisplay}</p>}
-                  <p className="mt-5 flex-1 text-ink-muted">{p.summary}</p>
+                  <p className="mt-4 flex-1 text-ink-muted">{p.summary}</p>
                   <Tags tags={p.tags} />
                   <button
                     type="button"
                     aria-haspopup="dialog"
                     aria-describedby={`${p.id}-title`}
-                    onClick={(e) => openPanel(p.slug, e.currentTarget)}
-                    className="mt-8 inline-flex min-h-[44px] items-center gap-2 self-start text-sm font-medium text-gold-text after:absolute after:inset-0 after:content-['']"
+                    onClick={(e) => openSheet(p.slug, e.currentTarget)}
+                    className="link-chevron mt-7 min-h-[44px] self-start after:absolute after:inset-0 after:rounded-tile after:content-['']"
                   >
-                    <span className="link-underline">{projects.labels.more}</span>
-                    <span aria-hidden>→</span>
+                    <span className="label">{projects.labels.more}</span>
+                    <span aria-hidden className="chev inline-block">
+                      ›
+                    </span>
                   </button>
                 </article>
               </Reveal>
@@ -92,7 +97,7 @@ export default function Projects({ projects, ui }: Props) {
         </ul>
 
         <Reveal>
-          <p className="mt-16 flex max-w-measure items-start gap-5 font-serif-italic text-[1.5rem] italic leading-snug text-ink-muted">
+          <p className="mt-14 flex max-w-measure items-start gap-5 font-serif-italic text-[1.5rem] italic leading-snug text-ink-muted">
             <span aria-hidden className="mt-[0.7em] h-px w-10 shrink-0 bg-gold" />
             {projects.outlook}
           </p>
@@ -103,7 +108,7 @@ export default function Projects({ projects, ui }: Props) {
 
       <AnimatePresence>
         {openProject && (
-          <Panel key={openProject.id} project={openProject} labels={projects.labels} ui={ui} onClose={closePanel} />
+          <Sheet key={openProject.id} project={openProject} labels={projects.labels} ui={ui} onClose={closeSheet} />
         )}
       </AnimatePresence>
     </section>
@@ -129,40 +134,45 @@ function Meta({ project, labels }: { project: ResolvedProject; labels: Labels })
   ].filter((r) => r.value)
   if (!rows.length) return null
   return (
-    <dl className="mt-8 space-y-4">
+    <dl className="mt-7 space-y-4">
       {rows.map((r) => (
         <div key={r.label}>
           <dt className="eyebrow">{r.label}</dt>
-          <dd className="mt-1">{r.value}</dd>
+          <dd className="mt-0.5">{r.value}</dd>
         </div>
       ))}
     </dl>
   )
 }
 
-// The one dark band on the page: title, role and tags stay pinned while the
+// The one dark surface on the page: title, role and tags stay pinned while the
 // four steps of the case study scroll past.
 function Featured({ project, labels }: { project: ResolvedProject; labels: Labels }) {
   return (
-    <div id={`project-${project.slug}`} className="section mt-16 bg-ink text-cream lg:mt-20">
-      <div className="container-page grid gap-x-16 gap-y-12 lg:grid-cols-12">
+    <div
+      id={`project-${project.slug}`}
+      className="-mx-5 mt-14 bg-ink px-5 py-16 text-cream md:mx-0 md:rounded-tile md:px-12 md:py-20 lg:mt-20 lg:px-16"
+    >
+      <div className="grid gap-x-16 gap-y-12 lg:grid-cols-12">
         <div className="lg:col-span-5">
-          <Reveal className="lg:sticky lg:top-[calc(var(--header-h)+2.5rem)]">
+          <Reveal className="lg:sticky lg:top-[calc(var(--header-h)+3rem)]">
             <p className="eyebrow">{project.eyebrow}</p>
-            <h3 className="mt-5 text-[clamp(2.125rem,3.8vw,3.25rem)] text-cream">{project.title}</h3>
+            <h3 className="mt-4 hyphens-auto text-[clamp(2rem,2.7vw,2.5rem)] leading-[1.06] tracking-[-0.02em] text-cream">
+              {project.title}
+            </h3>
             <div className="text-cream/85">
               <Meta project={project} labels={labels} />
             </div>
             <Tags tags={project.tags} />
           </Reveal>
         </div>
-        <div className="space-y-12 lg:col-span-7 lg:space-y-16 lg:pt-2">
+        <div className="space-y-12 lg:col-span-7 lg:space-y-16 lg:pt-1">
           {caseSteps.map((step, i) =>
             project[step] ? (
               <Reveal key={step} index={i % 2}>
-                <div className="border-t border-gold/30 pt-6">
+                <div className="border-t border-cream/15 pt-6">
                   <h4 className="eyebrow">{labels[step]}</h4>
-                  <p className="mt-4 max-w-measure text-[1.0625em] leading-relaxed text-cream/85">{project[step]}</p>
+                  <p className="mt-3 max-w-measure text-[1.125rem] leading-[1.55] text-cream/85">{project[step]}</p>
                 </div>
               </Reveal>
             ) : null,
@@ -173,23 +183,39 @@ function Featured({ project, labels }: { project: ResolvedProject; labels: Label
   )
 }
 
-interface PanelProps {
+/* ---------------------------------------------------------------- sheet */
+
+// Apple's momentum projection: where a flick would come to rest if it kept
+// decelerating like a scroll view. Used to decide whether to dismiss.
+function projectMomentum(velocity: number, decelerationRate = 0.998) {
+  return ((velocity / 1000) * decelerationRate) / (1 - decelerationRate)
+}
+
+// Enter and exit on a critically damped spring; snapping back after a drag
+// gets a little bounce (damping ≈ 0.8) because the hand carried momentum.
+const sheetSpring = { type: 'spring', bounce: 0, duration: 0.42 } as const
+const snapBack = { bounceStiffness: 500, bounceDamping: 36 }
+
+interface SheetProps {
   project: ResolvedProject
   labels: Labels
   ui: UiStrings
   onClose: () => void
 }
 
-function Panel({ project, labels, ui, onClose }: PanelProps) {
+function Sheet({ project, labels, ui, onClose }: SheetProps) {
   const reduce = useReducedMotion()
-  const panelRef = useRef<HTMLDivElement>(null)
+  // Phones get a bottom sheet, larger screens a floating side sheet. The
+  // sheet only ever mounts in the browser, so matchMedia is safe here.
+  const [compact] = useState(() => window.matchMedia('(max-width: 767px)').matches)
+  const controls = useDragControls()
+  const sheetRef = useRef<HTMLDivElement>(null)
   const closeRef = useRef<HTMLButtonElement>(null)
-  const titleId = `${project.id}-panel-title`
-  const transition = reduce ? { duration: 0 } : { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const }
+  const titleId = `${project.id}-sheet-title`
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
-    closeRef.current?.focus()
+    closeRef.current?.focus({ preventScroll: true })
     const onKey = (e: globalThis.KeyboardEvent) => e.key === 'Escape' && onClose()
     window.addEventListener('keydown', onKey)
     return () => {
@@ -200,8 +226,8 @@ function Panel({ project, labels, ui, onClose }: PanelProps) {
 
   // Keep Tab inside the dialog.
   const trapFocus = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key !== 'Tab' || !panelRef.current) return
-    const focusable = panelRef.current.querySelectorAll<HTMLElement>('button, a[href], [tabindex]:not([tabindex="-1"])')
+    if (e.key !== 'Tab' || !sheetRef.current) return
+    const focusable = sheetRef.current.querySelectorAll<HTMLElement>('button, a[href], [tabindex]:not([tabindex="-1"])')
     const first = focusable[0]
     const last = focusable[focusable.length - 1]
     if (e.shiftKey && document.activeElement === first) {
@@ -213,55 +239,95 @@ function Panel({ project, labels, ui, onClose }: PanelProps) {
     }
   }
 
+  // Release: project the flick forward and dismiss if it would land past
+  // half the sheet. Otherwise the drag constraints spring it back.
+  const onDragEnd = (_: unknown, info: PanInfo) => {
+    const el = sheetRef.current
+    if (!el) return
+    const size = compact ? el.offsetHeight : el.offsetWidth
+    const offset = compact ? info.offset.y : info.offset.x
+    const velocity = compact ? info.velocity.y : info.velocity.x
+    if (offset + projectMomentum(velocity) > size * 0.5) onClose()
+  }
+
+  // Dragging starts only from the header, so the body can scroll normally.
+  const startDrag = (e: PointerEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest('button')) return
+    controls.start(e)
+  }
+
+  const hiddenPos = compact ? { y: '100%' } : { x: '110%' }
+  const shownPos = compact ? { y: 0 } : { x: 0 }
+  const motionProps = reduce
+    ? { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: 0.2 } }
+    : { initial: hiddenPos, animate: shownPos, exit: hiddenPos, transition: sheetSpring }
+
   const sections = [...caseSteps.map((s) => ({ label: labels[s], text: project[s] })), { label: '', text: project.text }]
 
   return (
     <div className="fixed inset-0 z-[60]">
       <m.div
-        className="absolute inset-0 bg-ink/40"
+        className="absolute inset-0 bg-ink/35"
         onClick={onClose}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={transition}
+        transition={{ duration: reduce ? 0.2 : 0.35 }}
       />
       <m.div
-        ref={panelRef}
+        ref={sheetRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
         onKeyDown={trapFocus}
-        className="absolute inset-y-0 right-0 w-full max-w-xl overflow-y-auto bg-cream shadow-[-24px_0_48px_-24px_rgba(10,10,10,0.25)]"
-        initial={{ x: '100%' }}
-        animate={{ x: 0 }}
-        exit={{ x: '100%' }}
-        transition={transition}
+        drag={reduce ? false : compact ? 'y' : 'x'}
+        dragListener={false}
+        dragControls={controls}
+        dragConstraints={{ top: 0, bottom: 0, left: 0, right: 0 }}
+        // Follows 1:1 toward dismissal, rubber-bands the other way.
+        dragElastic={compact ? { top: 0.06, bottom: 1 } : { left: 0.06, right: 1 }}
+        dragMomentum={false}
+        dragTransition={snapBack}
+        onDragEnd={onDragEnd}
+        className={`absolute flex flex-col overflow-hidden bg-cream shadow-[0_30px_80px_-20px_rgba(10,10,10,0.45)] ${
+          compact
+            ? 'inset-x-0 bottom-0 h-[92svh] rounded-t-[22px]'
+            : 'bottom-3 right-3 top-3 w-[min(36rem,calc(100%-1.5rem))] rounded-tile'
+        }`}
+        {...motionProps}
       >
-        <div className="sticky top-0 flex justify-end bg-cream/95 px-5 py-3 backdrop-blur md:px-8">
-          <button
-            ref={closeRef}
-            type="button"
-            onClick={onClose}
-            className="flex h-11 items-center gap-3 text-sm font-medium text-ink-muted hover:text-ink"
-          >
-            {ui.close}
-            <span aria-hidden className="text-2xl leading-none">
-              ×
-            </span>
-          </button>
+        <div
+          onPointerDown={startDrag}
+          className={`flex shrink-0 select-none flex-col ${reduce ? '' : compact ? 'cursor-grab touch-none' : 'cursor-grab'}`}
+        >
+          {compact && <span aria-hidden className="mx-auto mt-2 h-[5px] w-9 rounded-full bg-ink/20" />}
+          <div className="flex items-center justify-end px-4 pt-3 md:px-5 md:pt-4">
+            <button
+              ref={closeRef}
+              type="button"
+              onClick={onClose}
+              aria-label={ui.close}
+              className="press flex h-8 w-8 items-center justify-center rounded-full bg-ink/[0.07] text-ink-muted hover:bg-ink/[0.1] hover:text-ink"
+            >
+              <svg aria-hidden width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+              </svg>
+            </button>
+          </div>
         </div>
-        <div className="px-6 pb-16 md:px-12">
+
+        <div className="flex-1 overflow-y-auto overscroll-contain px-6 pb-16 md:px-10">
           <p className="eyebrow">{project.eyebrow}</p>
-          <h3 id={titleId} className="mt-4 text-[clamp(2rem,4vw,2.75rem)]">
+          <h3 id={titleId} className="mt-3 text-[clamp(2.125rem,4vw,2.75rem)] leading-[1.04] tracking-[-0.02em]">
             {project.title}
           </h3>
           <Meta project={project} labels={labels} />
-          <div className="mt-10 space-y-8">
+          <div className="mt-9 space-y-7">
             {sections.map((s, i) =>
               s.text ? (
-                <div key={i} className="border-t border-gold/40 pt-5">
+                <div key={i} className="border-t border-ink/10 pt-5">
                   {s.label && <h4 className="eyebrow">{s.label}</h4>}
-                  <p className={s.label ? 'mt-3' : ''}>{s.text}</p>
+                  <p className={s.label ? 'mt-2' : ''}>{s.text}</p>
                 </div>
               ) : null,
             )}

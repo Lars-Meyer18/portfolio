@@ -7,10 +7,11 @@ interface Props {
 export default function NextLink({ href, label }: Props) {
   return (
     <p className="mt-20">
-      <a href={href} className="eyebrow group inline-flex items-center gap-3">
-        <span className="link-underline">{label}</span>
-        <span aria-hidden className="transition-transform duration-300 group-hover:translate-y-0.5">
-          ↓
+      <a href={href} className="link-chevron press text-[1.0625rem]">
+        <span className="label">{label}</span>
+        {/* Outer span moves on hover, inner span points the chevron down. */}
+        <span aria-hidden className="chev inline-block">
+          <span className="inline-block rotate-90">›</span>
         </span>
       </a>
     </p>

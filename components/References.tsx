@@ -25,11 +25,11 @@ export default function References({ references, sources, locale }: Props) {
           title={references.title}
           lead={references.lead}
         />
-        <div className="mt-14 grid gap-10 lg:grid-cols-3 lg:gap-12">
+        <div className="mt-14 grid gap-4 md:gap-5 lg:grid-cols-3">
           {references.items.map((item, i) => (
             <Reveal key={item.id} index={i} className="h-full">
-              <figure className="flex h-full flex-col border-t border-gold/60 pt-8">
-                <blockquote className="flex-1 font-serif-italic text-[1.5rem] italic leading-snug">
+              <figure className="tile flex h-full flex-col p-7 md:p-9">
+                <blockquote className="flex-1 font-serif-italic text-[1.625rem] italic leading-[1.3] tracking-[-0.01em]">
                   <p>
                     {open}
                     {item.quote}

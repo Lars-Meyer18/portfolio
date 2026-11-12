@@ -9,15 +9,22 @@
   --ink-muted: #4A4744;
   --gold: #C9A96E;
   --gold-text: #7D5F33;
-  --header-h: 72px;
+  --header-h: 52px;
+  --radius-tile: 28px;
+  --radius-card: 22px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  /* The platform font ships optical sizing and tracking tables: SF Pro on
+     Apple devices, Segoe UI Variable on Windows 11. */
+  --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI Variable Text', 'Segoe UI', system-ui,
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
 @layer base {
   html {
     background-color: var(--cream);
-    scroll-padding-top: calc(var(--header-h) + 16px);
+    scroll-padding-top: calc(var(--header-h) + 24px);
     -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -26,35 +33,28 @@
     }
   }
 
+  /* Body copy: 17 px with comfortable leading and tracking near zero. */
   body {
     color: var(--ink);
     background-color: var(--cream);
-    font-family: var(--font-dm-sans), system-ui, sans-serif;
-    font-size: 1rem;
-    line-height: 1.6;
+    font-family: var(--font-system);
+    font-size: 1.0625rem;
+    line-height: 1.47;
+    letter-spacing: -0.01em;
+    font-optical-sizing: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  @media (min-width: 768px) {
-    body {
-      font-size: 1.0625rem;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    body {
-      font-size: 1.125rem;
-    }
-  }
-
+  /* Display serif: tracking tightens and leading shrinks as size grows. */
   h1,
   h2,
   h3,
   h4 {
     font-family: var(--font-cormorant), Georgia, serif;
     font-weight: 500;
-    line-height: 1.1;
+    line-height: 1.08;
+    letter-spacing: -0.012em;
     text-wrap: balance;
   }
 
@@ -72,6 +72,15 @@
     text-wrap: pretty;
   }
 
+  small,
+  .text-sm {
+    letter-spacing: -0.005em;
+  }
+
+  .text-xs {
+    letter-spacing: 0.01em;
+  }
+
   ::selection {
     background-color: rgba(201, 169, 110, 0.35);
     color: var(--ink);
@@ -80,7 +89,7 @@
   :focus-visible {
     outline: 2px solid var(--gold-text);
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: 6px;
   }
 
   .bg-ink :focus-visible {
@@ -106,13 +115,15 @@
     padding-block: clamp(96px, 14vh, 160px);
   }
 
+  /* Eyebrows in sentence case, the way Apple labels a section: small,
+     semibold, coloured, no wide tracking. */
   .eyebrow {
-    font-family: var(--font-dm-sans), system-ui, sans-serif;
-    font-size: 0.75rem;
-    font-weight: 500;
-    line-height: 1.4;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+    font-family: var(--font-system);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.005em;
+    font-variant-numeric: tabular-nums;
     color: var(--gold-text);
   }
 
@@ -121,65 +132,185 @@
   }
 
   .section-title {
-    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-size: clamp(2.75rem, 6vw, 5rem);
     font-weight: 500;
-    line-height: 1.05;
-    letter-spacing: -0.01em;
+    line-height: 1.02;
+    letter-spacing: -0.022em;
   }
 
   .lead {
-    font-size: clamp(1.125rem, 1.6vw, 1.3125rem);
-    line-height: 1.55;
+    font-size: clamp(1.1875rem, 1.7vw, 1.4375rem);
+    line-height: 1.38;
+    letter-spacing: 0.002em;
     color: var(--ink-muted);
-    max-width: 60ch;
+    max-width: 52ch;
   }
 
   .chip {
     display: inline-flex;
     align-items: center;
-    padding: 0.3rem 0.75rem;
+    padding: 0.3125rem 0.8125rem;
+    border-radius: 980px;
     font-size: 0.8125rem;
-    line-height: 1.4;
-    border: 1px solid rgba(125, 95, 51, 0.35);
+    line-height: 1.35;
+    letter-spacing: 0.005em;
+    background-color: rgba(125, 95, 51, 0.09);
     color: var(--ink-muted);
   }
 
   .bg-ink .chip {
-    border-color: rgba(201, 169, 110, 0.4);
+    background-color: rgba(250, 248, 245, 0.1);
     color: rgba(250, 248, 245, 0.85);
   }
 
-  .card {
-    border: 1px solid rgba(10, 10, 10, 0.1);
+  /* Tiles replace hairline borders. On sand sections they flip to cream. */
+  .tile {
+    background-color: var(--sand);
+    border-radius: var(--radius-tile);
+  }
+
+  .bg-sand .tile {
     background-color: var(--cream);
+  }
+
+  .tile-interactive {
     transition:
-      border-color 0.3s var(--ease-out),
-      transform 0.3s var(--ease-out);
+      transform 0.5s var(--ease-out),
+      box-shadow 0.5s var(--ease-out);
   }
 
-  .card:hover,
-  .card:focus-within {
-    border-color: var(--gold);
-    transform: translateY(-2px);
+  @media (hover: hover) {
+    .tile-interactive:hover {
+      transform: scale(1.012);
+      box-shadow: 0 24px 48px -28px rgba(10, 10, 10, 0.3);
+    }
   }
 
-  .link-underline {
-    background-image: linear-gradient(currentColor, currentColor);
-    background-size: 0% 1px;
-    background-position: 0 100%;
-    background-repeat: no-repeat;
-    transition: background-size 0.3s var(--ease-out);
+  /* Feedback lives on the press and is instant. */
+  .press {
+    transition: transform 0.1s ease-out;
   }
 
-  .link-underline:hover,
-  .link-underline:focus-visible,
-  .link-underline[aria-current='true'] {
-    background-size: 100% 1px;
+  .press:active,
+  .tile-interactive:active {
+    transform: scale(0.97);
+    transition-duration: 0.1s;
+  }
+
+  .tile-interactive:active {
+    transform: scale(0.985);
+  }
+
+  .btn-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 48px;
+    padding-inline: 1.5rem;
+    border-radius: 980px;
+    font-size: 1.0625rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  .btn-primary {
+    background-color: var(--ink);
+    color: var(--cream);
+  }
+
+  @media (hover: hover) {
+    .btn-primary:hover {
+      background-color: #2b2926;
+    }
+  }
+
+  .link-chevron {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    font-weight: 500;
+    color: var(--gold-text);
+  }
+
+  .link-chevron .chev {
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  @media (hover: hover) {
+    .link-chevron:hover .chev {
+      transform: translateX(3px);
+    }
+
+    .link-chevron:hover .label {
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+  }
+
+  /* Translucent material for floating chrome; content scrolls underneath. */
+  .material {
+    background-color: rgba(250, 248, 245, 0.72);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+  }
+
+  /* Scroll edge effect instead of a hard divider: a soft shade appears only
+     once content actually runs under the bar. */
+  .scroll-edge::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    top: 100%;
+    height: 14px;
+    background: linear-gradient(to bottom, rgba(10, 10, 10, 0.06), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .scroll-edge[data-scrolled='true']::after {
+    opacity: 1;
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
   }
 }
 
-/* Hero entrance runs in CSS so it starts before hydration and keeps LCP low. */
-/* The name stays fully visible from the first frame (it is the LCP element)
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .material {
+    background-color: rgba(250, 248, 245, 0.97);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .material {
+    background-color: var(--cream);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .material {
+    background-color: var(--cream);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: 0 1px 0 var(--ink);
+  }
+
+  .tile,
+  .chip {
+    box-shadow: inset 0 0 0 1px var(--ink-muted);
+  }
+}
+
+/* Hero entrance runs in CSS so it starts before hydration and keeps LCP low.
+   The name stays fully visible from the first frame (it is the LCP element)
    and only settles into place. */
 @keyframes rise {
   from {
@@ -219,16 +350,6 @@
   }
 }
 
-@keyframes nudge {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(8px);
-  }
-}
-
 .hero-word {
   display: inline-block;
   animation: rise 1s var(--ease-out) both;
@@ -247,22 +368,28 @@
   animation: draw-x 1s var(--ease-out) both;
 }
 
-.scroll-nudge {
-  animation: nudge 1.8s ease-in-out infinite;
-}
-
 /* Restarts every time a [hidden] element is shown again. */
 .reveal-in {
   animation: fade-up 0.4s var(--ease-out) both;
 }
 
+/* Reduced motion keeps gentle cross-fades but drops movement. */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-delay: 0ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .hero-word,
+  .hero-line {
+    animation: none;
+  }
+
+  .hero-fade,
+  .hero-photo,
+  .reveal-in {
+    animation: fade-in 0.25s ease both;
+  }
+
+  .tile-interactive,
+  .tile-interactive:hover,
+  .link-chevron .chev {
+    transform: none !important;
+    transition: none;
   }
 }

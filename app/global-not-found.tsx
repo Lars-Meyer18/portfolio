@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import { serif, sans } from './fonts'
+import { serif } from './fonts'
 
 export const metadata: Metadata = {
   title: '404 · Lars Meyer',
@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function GlobalNotFound() {
   return (
-    <html lang="de" className={`${serif.variable} ${sans.variable}`}>
+    <html lang="de" className={serif.variable}>
       <body>
         <main className="min-h-[100svh] flex items-center justify-center px-6 text-center">
           <div>

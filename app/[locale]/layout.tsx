@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import { notFound } from 'next/navigation'
 import '../globals.css'
-import { serif, serifItalic, sans } from '../fonts'
+import { serif, serifItalic } from '../fonts'
 import { getContent, isLocale, locales } from '@/content'
 import { SITE_URL } from '@/content/flags'
 import MotionProvider from '@/components/MotionProvider'
@@ -67,7 +67,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${serif.variable} ${serifItalic.variable} ${sans.variable}`}
+      className={`${serif.variable} ${serifItalic.variable}`}
       suppressHydrationWarning
     >
       <body>

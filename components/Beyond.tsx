@@ -26,13 +26,13 @@ export default function Beyond({ beyond, next }: Props) {
             </Reveal>
           </div>
 
-          <Reveal index={1} className="lg:col-span-7 lg:pt-3">
+          <Reveal index={1} className="tile p-7 md:p-10 lg:col-span-7">
             <p className="eyebrow">{beyond.period}</p>
-            <h3 className="mt-3 text-[clamp(1.625rem,2.6vw,2.125rem)]">{beyond.role}</h3>
+            <h3 className="mt-2 text-[clamp(1.75rem,2.8vw,2.25rem)] tracking-[-0.015em]">{beyond.role}</h3>
             <p className="mt-1 text-ink-muted">{beyond.organisation}</p>
             <p className="mt-5 max-w-measure">{beyond.text}</p>
 
-            <div className="mt-10 border-t border-gold/50 pt-6">
+            <div className="mt-8 border-t border-ink/10 pt-6">
               <h3 className="eyebrow">{beyond.interestsLabel}</h3>
               <p className="mt-3 max-w-measure text-ink-muted">{beyond.interests}</p>
             </div>

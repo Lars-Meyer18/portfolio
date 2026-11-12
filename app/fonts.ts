@@ -1,5 +1,7 @@
-import { Cormorant_Garamond, DM_Sans } from 'next/font/google'
+import { Cormorant_Garamond } from 'next/font/google'
 
+// Display serif for headlines. Body and UI text use the platform's system
+// font (SF Pro on Apple devices, Segoe UI on Windows), see globals.css.
 export const serif = Cormorant_Garamond({
   subsets: ['latin'],
   weight: ['400', '500'],
@@ -15,11 +17,4 @@ export const serifItalic = Cormorant_Garamond({
   variable: '--font-cormorant-italic',
   display: 'swap',
   preload: false,
-})
-
-export const sans = DM_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-dm-sans',
-  display: 'swap',
 })

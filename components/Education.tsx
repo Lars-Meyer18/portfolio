@@ -18,18 +18,18 @@ export default function Education({ education }: { education: EducationContent }
           lead={education.lead}
         />
 
-        <Reveal>
-          <dl className="mt-14 grid divide-y divide-gold/30 border-y border-gold/50 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-            {education.highlights.map((h) => (
-              <div key={h.id} className="flex flex-col-reverse gap-3 py-7 sm:px-6 sm:first:pl-0 lg:px-10">
-                <dt className="text-sm leading-snug text-ink-muted">{h.label}</dt>
-                <dd className="font-serif text-[clamp(2.75rem,5vw,4rem)] leading-none">
-                  <CountUp highlight={h} />
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </Reveal>
+        {/* Highlights as a row of tiles, Apple's way of presenting key figures */}
+        <dl className="mt-14 grid gap-4 sm:grid-cols-3 md:gap-5">
+          {education.highlights.map((h, i) => (
+            // Reveal renders the div that groups dt and dd, as <dl> requires.
+            <Reveal key={h.id} index={i} className="tile flex h-full flex-col-reverse justify-end gap-3 p-7 md:p-8">
+              <dt className="max-w-[22ch] text-[0.9375rem] leading-snug text-ink-muted">{h.label}</dt>
+              <dd className="font-serif text-[clamp(3.25rem,6vw,4.75rem)] leading-none tracking-[-0.03em]">
+                <CountUp highlight={h} />
+              </dd>
+            </Reveal>
+          ))}
+        </dl>
 
         <ol className="relative mt-20">
           <span aria-hidden className="absolute bottom-3 left-[5px] top-3 w-px bg-gold/40" />
@@ -41,7 +41,7 @@ export default function Education({ education }: { education: EducationContent }
               />
               <Reveal index={i % 2}>
                 <p className="eyebrow">{e.period}</p>
-                <h3 className="mt-3 max-w-[30ch] text-[clamp(1.625rem,2.6vw,2.125rem)]">{e.title}</h3>
+                <h3 className="mt-2 max-w-[30ch] text-[clamp(1.75rem,2.8vw,2.25rem)] tracking-[-0.015em]">{e.title}</h3>
                 <p className="mt-1 text-ink-muted">{e.institution}</p>
                 <p className="mt-4 max-w-measure">{e.text}</p>
 

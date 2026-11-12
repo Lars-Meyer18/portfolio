@@ -10,13 +10,13 @@ export default function Skills({ skills }: { skills: SkillsContent }) {
         <SectionHeader id="skills-title" eyebrow={skills.eyebrow} title={skills.title} lead={skills.lead} />
 
         {/* Desktop: three columns of two groups each, filled column by column */}
-        <div className="mt-16 grid gap-x-14 gap-y-14 md:grid-cols-2 lg:grid-flow-col lg:grid-cols-3 lg:grid-rows-2">
+        <div className="mt-14 grid gap-4 md:grid-cols-2 md:gap-5 lg:grid-flow-col lg:grid-cols-3 lg:grid-rows-2">
           {skills.groups.map((group, i) => (
-            <Reveal key={group.id} index={i % 3}>
-              <h3 id={group.id} className="border-b border-gold/50 pb-3 text-[1.75rem]">
+            <Reveal key={group.id} index={i % 3} className="tile p-7 md:p-8">
+              <h3 id={group.id} className="text-[1.875rem] tracking-[-0.015em]">
                 {group.title}
               </h3>
-              <ul aria-labelledby={group.id} className="mt-5 space-y-3">
+              <ul aria-labelledby={group.id} className="mt-4 space-y-2.5">
                 {group.items.map((item) => (
                   <li key={item.label} className="flex items-baseline justify-between gap-4">
                     <span>{item.label}</span>

@@ -2,10 +2,14 @@
 
 import { useEffect, useRef, useState, type MouseEvent } from 'react'
 import { useRouter } from 'next/navigation'
+import { m } from 'framer-motion'
 import type { Locale, Nav, UiStrings } from '@/content/schema'
 
 const sections = ['about', 'experience', 'projects', 'education', 'skills'] as const
 type SectionId = (typeof sections)[number]
+
+// Critically damped: the indicator glides to the new link without overshoot.
+const indicatorSpring = { type: 'spring', bounce: 0, duration: 0.4 } as const
 
 interface Props {
   locale: Locale
@@ -23,7 +27,7 @@ export default function Navigation({ locale, nav, ui }: Props) {
   const other: Locale = locale === 'de' ? 'en' : 'de'
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
+    const onScroll = () => setScrolled(window.scrollY > 8)
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
@@ -77,36 +81,35 @@ export default function Navigation({ locale, nav, ui }: Props) {
     router.push(`/${other}${hash}`, { scroll: false })
   }
 
+  // A segmented control, like the ones in iOS settings.
   const languageSwitch = (
     <div
       role="group"
       aria-label={ui.languageLabel}
-      className="flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em]"
+      className="flex items-center rounded-full bg-ink/[0.06] p-[3px] text-xs font-semibold"
     >
-      {(['de', 'en'] as const).map((l, i) => (
-        <span key={l} className="flex items-center gap-2">
-          {i > 0 && (
-            <span aria-hidden className="text-gold">
-              |
-            </span>
-          )}
-          {l === locale ? (
-            <span aria-current="true" className="text-ink">
-              {l.toUpperCase()}
-            </span>
-          ) : (
-            <a
-              href={`/${l}`}
-              hrefLang={l}
-              onClick={switchLanguage}
-              className="text-ink-muted transition-colors hover:text-ink"
-            >
-              <span lang={l}>{l.toUpperCase()}</span>
-              <span className="sr-only">, {ui.switchToLanguage}</span>
-            </a>
-          )}
-        </span>
-      ))}
+      {(['de', 'en'] as const).map((l) =>
+        l === locale ? (
+          <span
+            key={l}
+            aria-current="true"
+            className="rounded-full bg-cream px-2.5 py-1 text-ink shadow-[0_1px_3px_rgba(10,10,10,0.14)]"
+          >
+            {l.toUpperCase()}
+          </span>
+        ) : (
+          <a
+            key={l}
+            href={`/${l}`}
+            hrefLang={l}
+            onClick={switchLanguage}
+            className="press rounded-full px-2.5 py-1 text-ink-muted hover:text-ink"
+          >
+            <span lang={l}>{l.toUpperCase()}</span>
+            <span className="sr-only">, {ui.switchToLanguage}</span>
+          </a>
+        ),
+      )}
     </div>
   )
 
@@ -114,37 +117,39 @@ export default function Navigation({ locale, nav, ui }: Props) {
     <>
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:bg-ink focus:px-4 focus:py-2 focus:text-cream"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-cream"
       >
         {ui.skipToContent}
       </a>
       <header
-        className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
-          scrolled || open
-            ? 'border-ink/5 bg-cream/90 backdrop-blur-md'
-            : 'border-transparent bg-transparent'
-        }`}
+        data-scrolled={scrolled || open}
+        className="scroll-edge material fixed inset-x-0 top-0 z-50"
       >
         <nav
           aria-label={ui.mainNav}
           className="container-page flex h-[var(--header-h)] items-center justify-between"
         >
-          <a
-            href="#top"
-            className="font-serif text-2xl tracking-[0.15em] text-ink transition-colors hover:text-gold-text"
-          >
+          <a href="#top" className="press font-serif text-[1.375rem] tracking-[0.12em] text-ink">
             <span aria-hidden>LM</span>
             <span className="sr-only">Lars Meyer</span>
           </a>
 
-          <ul className="hidden items-center gap-8 md:flex">
+          <ul className="hidden items-center gap-1 md:flex">
             {sections.map((id) => (
-              <li key={id}>
+              <li key={id} className="relative">
+                {active === id && (
+                  <m.span
+                    layoutId="nav-indicator"
+                    transition={indicatorSpring}
+                    aria-hidden
+                    className="absolute inset-0 rounded-full bg-ink/[0.06]"
+                  />
+                )}
                 <a
                   href={`#${id}`}
                   aria-current={active === id ? 'true' : undefined}
-                  className={`link-underline py-1 text-xs font-medium uppercase tracking-[0.18em] transition-colors hover:text-ink ${
-                    active === id ? 'text-ink' : 'text-ink-muted'
+                  className={`press relative block rounded-full px-3.5 py-1.5 text-[0.8125rem] transition-colors ${
+                    active === id ? 'text-ink' : 'text-ink/70 hover:text-ink'
                   }`}
                 >
                   {nav[id]}
@@ -153,22 +158,22 @@ export default function Navigation({ locale, nav, ui }: Props) {
             ))}
           </ul>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             <div className="hidden md:block">{languageSwitch}</div>
             <button
               ref={toggleRef}
               type="button"
-              className="-mr-2 flex h-11 w-11 flex-col items-center justify-center gap-[6px] md:hidden"
+              className="press -mr-2 flex h-11 w-11 flex-col items-center justify-center gap-[6px] md:hidden"
               aria-expanded={open}
               aria-controls="mobile-menu"
               aria-label={open ? ui.menuClose : ui.menuOpen}
               onClick={() => setOpen((v) => !v)}
             >
               <span
-                className={`block h-px w-6 bg-ink transition-transform duration-300 ${open ? 'translate-y-[3.5px] rotate-45' : ''}`}
+                className={`block h-[1.5px] w-5 rounded-full bg-ink transition-transform duration-300 ${open ? 'translate-y-[3.75px] rotate-45' : ''}`}
               />
               <span
-                className={`block h-px w-6 bg-ink transition-transform duration-300 ${open ? '-translate-y-[3.5px] -rotate-45' : ''}`}
+                className={`block h-[1.5px] w-5 rounded-full bg-ink transition-transform duration-300 ${open ? '-translate-y-[3.75px] -rotate-45' : ''}`}
               />
             </button>
           </div>
@@ -180,8 +185,8 @@ export default function Navigation({ locale, nav, ui }: Props) {
         hidden={!open}
         className="fixed inset-0 z-40 overflow-y-auto bg-cream pt-[var(--header-h)] md:hidden"
       >
-        <div className="container-page reveal-in flex min-h-full flex-col justify-between py-12">
-          <ul className="space-y-6">
+        <div className="container-page reveal-in flex min-h-full flex-col justify-between py-10">
+          <ul className="space-y-1">
             {sections.map((id, i) => (
               <li key={id}>
                 <a
@@ -189,14 +194,14 @@ export default function Navigation({ locale, nav, ui }: Props) {
                   href={`#${id}`}
                   onClick={() => setOpen(false)}
                   aria-current={active === id ? 'true' : undefined}
-                  className="font-serif text-4xl text-ink"
+                  className="press block py-2 text-[1.75rem] font-semibold tracking-[-0.02em] text-ink"
                 >
                   {nav[id]}
                 </a>
               </li>
             ))}
           </ul>
-          <div className="mt-12 border-t border-gold/40 pt-6">{languageSwitch}</div>
+          <div className="mt-12 flex">{languageSwitch}</div>
         </div>
       </div>
     </>

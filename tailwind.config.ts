@@ -12,7 +12,11 @@ const config: Config = {
       fontFamily: {
         serif: ['var(--font-cormorant)', 'Georgia', 'serif'],
         'serif-italic': ['var(--font-cormorant-italic)', 'Georgia', 'serif'],
-        sans: ['var(--font-dm-sans)', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-system)'],
+      },
+      borderRadius: {
+        tile: 'var(--radius-tile)',
+        card: 'var(--radius-card)',
       },
       maxWidth: {
         measure: '68ch',
