@@ -6,11 +6,12 @@ interface Props {
   sizes: string
   // Sizing and rounding come from the caller, e.g. 'aspect-[16/10] rounded-card'
   className?: string
+  quality?: number
 }
 
 // A photo with its crop, an illustration shown whole on white, or a
 // typographic poster where no usable photo exists.
-export default function Media({ image, sizes, className = '' }: Props) {
+export default function Media({ image, sizes, className = '', quality }: Props) {
   if (image.kind === 'poster') {
     return (
       <div
@@ -36,6 +37,7 @@ export default function Media({ image, sizes, className = '' }: Props) {
         alt={image.alt}
         fill
         sizes={sizes}
+        quality={quality}
         className={contain ? 'object-contain p-4' : 'object-cover'}
         style={!contain && image.position ? { objectPosition: image.position } : undefined}
       />

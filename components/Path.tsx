@@ -12,7 +12,13 @@ const images: Record<ChapterImage, string> = {
   craft: '/images/path-craft.jpg',
   switch: '/images/path-switch.jpg',
   portrait: '/images/portrait-2026.jpg',
-  studies: '/images/path-studies.jpg',
+  studies: '/images/path-fhnw.jpg',
+}
+
+// Crop focus per picture; the FHNW photo keeps the building's top in view.
+const positions: Partial<Record<ChapterImage, string>> = {
+  portrait: 'center top',
+  studies: 'center 30%',
 }
 
 // "Mein Weg": the year and picture stay pinned on the left while the four
@@ -78,7 +84,8 @@ export default function Path({ about }: { about: About }) {
                         alt={shown ? chapter.imageAlt : ''}
                         fill
                         sizes="(min-width: 1280px) 30rem, 36vw"
-                        className={`object-cover ${key === 'portrait' ? 'object-top' : 'object-center'}`}
+                        className="object-cover"
+                        style={{ objectPosition: positions[key] ?? 'center' }}
                       />
                     </div>
                   )
@@ -116,6 +123,7 @@ export default function Path({ about }: { about: About }) {
                         sizes="(min-width: 768px) 42rem, 92vw"
                         quality={65}
                         className="object-cover"
+                        style={{ objectPosition: positions[c.image] ?? 'center' }}
                       />
                     </div>
                   )}

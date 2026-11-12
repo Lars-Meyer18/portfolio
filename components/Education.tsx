@@ -2,20 +2,12 @@
 
 import { useEffect, useRef } from 'react'
 import { animate, useInView, useReducedMotion } from 'framer-motion'
-import type { ResolvedImage } from '@/content'
 import type { Education as EducationContent, Highlight } from '@/content/schema'
 import SectionHeader from './ui/SectionHeader'
 import Reveal from './ui/Reveal'
 import NextLink from './ui/NextLink'
-import Media from './ui/Media'
 
-interface Props {
-  education: EducationContent
-  // Pictures resolved on the server, keyed by entry id
-  images?: Record<string, ResolvedImage>
-}
-
-export default function Education({ education, images = {} }: Props) {
+export default function Education({ education }: { education: EducationContent }) {
   return (
     <section id="education" aria-labelledby="education-title" className="section bg-sand">
       <div className="container-page">
@@ -47,49 +39,37 @@ export default function Education({ education, images = {} }: Props) {
                 aria-hidden
                 className="absolute left-0 top-[0.35rem] h-[11px] w-[11px] rounded-full border border-gold bg-sand"
               />
-              <Reveal
-                index={i % 2}
-                className={images[e.id] ? 'grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-14' : undefined}
-              >
-                <div>
-                  <p className="eyebrow">{e.period}</p>
-                  <h3 className="mt-2 max-w-[30ch] text-[clamp(1.75rem,2.8vw,2.25rem)] tracking-[-0.015em]">{e.title}</h3>
-                  <p className="mt-1 text-ink-muted">{e.institution}</p>
-                  <p className="mt-4 max-w-measure">{e.text}</p>
+              <Reveal index={i % 2}>
+                <p className="eyebrow">{e.period}</p>
+                <h3 className="mt-2 max-w-[30ch] text-[clamp(1.75rem,2.8vw,2.25rem)] tracking-[-0.015em]">{e.title}</h3>
+                <p className="mt-1 text-ink-muted">{e.institution}</p>
+                <p className="mt-4 max-w-measure">{e.text}</p>
 
-                  {e.modules && (
-                    <div className="mt-6">
-                      <h4 className="eyebrow">{e.modulesLabel}</h4>
-                      <ul className="mt-3 max-w-measure space-y-1.5 text-ink-muted">
-                        {e.modules.map((m) => (
-                          <li key={m} className="relative pl-6">
-                            <span aria-hidden className="absolute left-0 top-[0.8em] h-px w-3 bg-gold" />
-                            {m}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
+                {e.modules && (
+                  <div className="mt-6">
+                    <h4 className="eyebrow">{e.modulesLabel}</h4>
+                    <ul className="mt-3 max-w-measure space-y-1.5 text-ink-muted">
+                      {e.modules.map((m) => (
+                        <li key={m} className="relative pl-6">
+                          <span aria-hidden className="absolute left-0 top-[0.8em] h-px w-3 bg-gold" />
+                          {m}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
-                  {e.focus && (
-                    <div className="mt-6">
-                      <h4 className="eyebrow">{e.focusLabel}</h4>
-                      <ul className="mt-3 flex max-w-3xl flex-wrap gap-2">
-                        {e.focus.map((f) => (
-                          <li key={f} className="chip">
-                            {f}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-                {images[e.id] && (
-                  <Media
-                    image={images[e.id]}
-                    sizes="(min-width: 1024px) 18rem, (min-width: 640px) 20rem, 80vw"
-                    className="aspect-[3/4] w-full max-w-[20rem] rounded-tile lg:max-w-none"
-                  />
+                {e.focus && (
+                  <div className="mt-6">
+                    <h4 className="eyebrow">{e.focusLabel}</h4>
+                    <ul className="mt-3 flex max-w-3xl flex-wrap gap-2">
+                      {e.focus.map((f) => (
+                        <li key={f} className="chip">
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 )}
               </Reveal>
             </li>

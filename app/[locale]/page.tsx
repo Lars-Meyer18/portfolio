@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { getContent, isLocale, resolveImages, resolveProjects, testimonialSource } from '@/content'
+import { getContent, isLocale, resolveProjects, testimonialSource } from '@/content'
 import { flags, LINKEDIN_URL, SITE_URL } from '@/content/flags'
 import Navigation from '@/components/Navigation'
 import Hero from '@/components/Hero'
@@ -19,9 +19,6 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
 
   const projects = { ...c.projects, items: resolveProjects(c.projects.items) }
   const sources = Object.fromEntries(c.references.items.map((t) => [t.id, testimonialSource(t)]))
-  const educationImages = Object.fromEntries(
-    c.education.entries.flatMap((e) => resolveImages(e.image ? [e.image] : []).map((img) => [e.id, img])),
-  )
 
   // Structured data for search engines. No address, phone or date of birth.
   const jsonLd = {
@@ -48,7 +45,7 @@ export default async function Page({ params }: { params: Promise<{ locale: strin
         <Path about={c.about} />
         <Experience experience={c.experience} ui={c.ui} />
         <Projects projects={projects} ui={c.ui} />
-        <Education education={c.education} images={educationImages} />
+        <Education education={c.education} />
         <Skills skills={c.skills} />
         <Beyond
           beyond={c.beyond}

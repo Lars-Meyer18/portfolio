@@ -20,6 +20,11 @@ export interface UiStrings {
   themeLabel: string
   themeLight: string
   themeDark: string
+  galleryLabel: string
+  gallerySlide: string
+  galleryShow: string
+  galleryPause: string
+  galleryPlay: string
   details: string
   hideDetails: string
   close: string
@@ -148,7 +153,6 @@ export interface EducationEntry {
   modules?: string[]
   focusLabel?: string
   focus?: string[]
-  image?: ImageRef
 }
 
 export interface Education {

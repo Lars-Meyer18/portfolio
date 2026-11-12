@@ -19,6 +19,11 @@ export const de = {
     themeLabel: 'Darstellung',
     themeLight: 'Hell',
     themeDark: 'Dunkel',
+    galleryLabel: 'Bilder',
+    gallerySlide: 'Bild {n} von {total}',
+    galleryShow: 'Bild {n} anzeigen',
+    galleryPause: 'Automatischen Bildwechsel anhalten',
+    galleryPlay: 'Automatischen Bildwechsel starten',
     details: 'Details',
     hideDetails: 'Weniger anzeigen',
     close: 'Schliessen',
@@ -81,7 +86,7 @@ export const de = {
         title: 'Wirtschaftsingenieurwesen',
         text: 'An der FHNW studiere ich Wirtschaftsingenieurwesen mit Vertiefung Digital Engineering. In Projekten mit Unternehmen arbeite ich an Strategie, Prozessen und Controlling, zuletzt als Scrum Master für ein international tätiges Industrieunternehmen.',
         image: 'studies',
-        imageAlt: 'Blick von oben in ein Atrium mit Treppen und Brücken',
+        imageAlt: 'Gebäude der Fachhochschule Nordwestschweiz FHNW in der Abendsonne',
       },
     ],
     closing:
@@ -235,6 +240,8 @@ export const de = {
         images: [
           { id: 'p4-team', alt: 'Das Projektteam mit Vertretern der Willy A. Bachofen AG vor dem WAB-Logo' },
           { id: 'p4-showroom', alt: 'Showroom der WAB-Group mit einem Mischgerät und Informationstafeln' },
+          { id: 'p4-mixer', alt: 'Mischgerät im Showroom der WAB-Group vor der Informationswand zum Mischen' },
+          { id: 'p4-welcome', alt: 'Begrüssungsbildschirm der Willy A. Bachofen AG neben der Weltkarte der WAB-Group' },
         ],
       },
       {
@@ -257,6 +264,8 @@ export const de = {
         tags: ['Energiewirtschaft', 'Strategische Analyse', 'Smart Grid', 'Regulierung'],
         images: [
           { id: 'p2-office', alt: 'Empfangsbereich der Helltec Engineering AG mit Firmenlogo' },
+          { id: 'p2-logo', alt: 'Leuchtendes Helltec-Logo mit dem Jubiläumsschriftzug «20 Years»' },
+          { id: 'p2-workspace', alt: 'Arbeitsplatz im Sitzungszimmer der Helltec Engineering AG' },
           { id: 'p2-team', alt: 'Das dreiköpfige Projektteam am Tisch bei Helltec' },
           { id: 'p2-room', alt: 'Zwei Teammitglieder bei der Arbeit im Sitzungszimmer' },
         ],
@@ -332,7 +341,6 @@ export const de = {
           'AI & Machine Learning',
           'Statistik und Datenanalyse',
         ],
-        image: { id: 'edu-fhnw', alt: 'Gebäude der Fachhochschule Nordwestschweiz FHNW in der Abendsonne' },
       },
       {
         id: 'edu-topsim',

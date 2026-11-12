@@ -2,7 +2,7 @@
 const nextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
-    qualities: [65, 75],
+    qualities: [65, 75, 85],
   },
   experimental: {
     // Root layout lives in app/[locale], so unmatched URLs need a global 404.

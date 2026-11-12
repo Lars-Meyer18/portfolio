@@ -8,6 +8,7 @@ import SectionHeader from './ui/SectionHeader'
 import Reveal from './ui/Reveal'
 import NextLink from './ui/NextLink'
 import Media from './ui/Media'
+import Gallery from './ui/Gallery'
 
 interface Props {
   projects: Omit<ProjectsContent, 'items'> & { items: ResolvedProject[] }
@@ -60,7 +61,7 @@ export default function Projects({ projects, ui }: Props) {
           lead={projects.lead}
         />
 
-        {featured && <Featured project={featured} labels={projects.labels} />}
+        {featured && <Featured project={featured} labels={projects.labels} ui={ui} />}
 
         {/* Mobile: a swipeable row with native momentum and snap points.
             Tablet and up: a grid of equal tiles. */}
@@ -76,6 +77,7 @@ export default function Projects({ projects, ui }: Props) {
                     <Media
                       image={p.images[0]}
                       sizes="(min-width: 1024px) 24rem, (min-width: 768px) 45vw, 84vw"
+                      quality={85}
                       className="aspect-[16/10] shrink-0"
                     />
                   )}
@@ -157,22 +159,20 @@ function Meta({ project, labels }: { project: ResolvedProject; labels: Labels })
 
 // The one dark surface on the page: title, role and tags stay pinned while the
 // four steps of the case study scroll past.
-function Featured({ project, labels }: { project: ResolvedProject; labels: Labels }) {
+function Featured({ project, labels, ui }: { project: ResolvedProject; labels: Labels; ui: UiStrings }) {
   return (
     <div
       id={`project-${project.slug}`}
       className="surface-feature -mx-5 mt-14 px-5 py-16 md:mx-0 md:rounded-tile md:px-12 md:py-20 lg:mt-20 lg:px-16"
     >
       {project.images.length > 0 && (
-        <Reveal className={`mb-12 grid gap-3 md:mb-16 md:gap-4 ${project.images.length > 1 ? 'md:grid-cols-[1.4fr_1fr]' : ''}`}>
-          {project.images.map((img) => (
-            <Media
-              key={img.id}
-              image={img}
-              sizes="(min-width: 1024px) 40rem, (min-width: 768px) 55vw, 100vw"
-              className="h-60 rounded-card md:h-[24rem]"
-            />
-          ))}
+        <Reveal className="mb-12 md:mb-16">
+          <Gallery
+            images={project.images}
+            ui={ui}
+            aspect="aspect-[3/2] lg:aspect-[16/9]"
+            sizes="(min-width: 1280px) 68rem, (min-width: 768px) 90vw, 100vw"
+          />
         </Reveal>
       )}
       <div className="grid gap-x-16 gap-y-12 lg:grid-cols-12">
@@ -341,15 +341,8 @@ function Sheet({ project, labels, ui, onClose }: SheetProps) {
 
         <div className="flex-1 overflow-y-auto overscroll-contain px-6 pb-16 md:px-10">
           {project.images.length > 0 && (
-            <div className="scrollbar-none -mx-6 mb-8 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6 md:-mx-10 md:scroll-px-10 md:px-10">
-              {project.images.map((img) => (
-                <Media
-                  key={img.id}
-                  image={img}
-                  sizes="(min-width: 768px) 30rem, 85vw"
-                  className={`aspect-[4/3] shrink-0 snap-start rounded-card ${project.images.length > 1 ? 'w-[85%]' : 'w-full'}`}
-                />
-              ))}
+            <div className="mb-8">
+              <Gallery images={project.images} ui={ui} aspect="aspect-[4/3]" sizes="(min-width: 768px) 34rem, 100vw" />
             </div>
           )}
           <p className="eyebrow">{project.eyebrow}</p>

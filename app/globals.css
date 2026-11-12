@@ -444,3 +444,17 @@
     transition: none;
   }
 }
+
+/* Gallery: the active dot fills over the five seconds of autoplay. */
+@keyframes gallery-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.gallery-progress {
+  animation: gallery-progress 5s linear both;
+}
