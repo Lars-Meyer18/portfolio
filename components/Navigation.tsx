@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type MouseEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { m } from 'framer-motion'
 import type { Locale, Nav, UiStrings } from '@/content/schema'
+import ThemeToggle from './ThemeToggle'
 
 const sections = ['about', 'experience', 'projects', 'education', 'skills'] as const
 type SectionId = (typeof sections)[number]
@@ -159,7 +160,10 @@ export default function Navigation({ locale, nav, ui }: Props) {
           </ul>
 
           <div className="flex items-center gap-4">
-            <div className="hidden md:block">{languageSwitch}</div>
+            <div className="hidden items-center gap-2 md:flex">
+              {languageSwitch}
+              <ThemeToggle ui={ui} />
+            </div>
             <button
               ref={toggleRef}
               type="button"
@@ -201,7 +205,10 @@ export default function Navigation({ locale, nav, ui }: Props) {
               </li>
             ))}
           </ul>
-          <div className="mt-12 flex">{languageSwitch}</div>
+          <div className="mt-12 flex items-center gap-3">
+            {languageSwitch}
+            <ThemeToggle ui={ui} />
+          </div>
         </div>
       </div>
     </>

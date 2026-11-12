@@ -15,6 +15,9 @@ export interface UiStrings {
   menuClose: string
   languageLabel: string
   switchToLanguage: string
+  themeLabel: string
+  themeLight: string
+  themeDark: string
   details: string
   hideDetails: string
   close: string

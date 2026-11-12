@@ -9,6 +9,10 @@ import { palettes } from '@/design/tokens'
 
 export const dynamicParams = false
 
+// Runs before first paint, so a theme the visitor picked never flashes the
+// other one. Without a stored choice the system setting applies.
+const themeScript = `try{var t=localStorage.getItem('theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}`
+
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }))
 }
@@ -74,6 +78,9 @@ export default async function LocaleLayout({
       className={`${serif.variable} ${serifItalic.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>
         <MotionProvider>{children}</MotionProvider>
       </body>

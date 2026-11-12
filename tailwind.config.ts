@@ -12,8 +12,15 @@ const vars = (palette: Record<ColorToken, string>) =>
   Object.fromEntries(tokens.map((t) => [`--${t}`, toChannels(palette[t])]))
 
 const config: Config = {
-  // Dark mode follows the visitor's system setting.
-  darkMode: 'media',
+  // Dark mode follows the system setting unless the visitor picked a theme,
+  // which the toggle stores as data-theme on <html>.
+  darkMode: [
+    'variant',
+    [
+      '@media (prefers-color-scheme: dark) { &:is(:root:not([data-theme="light"]) *) }',
+      '&:is([data-theme="dark"] *)',
+    ],
+  ],
   content: [
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
@@ -43,7 +50,8 @@ const config: Config = {
     plugin(({ addBase }) => {
       addBase({
         ':root': vars(palettes.light),
-        '@media (prefers-color-scheme: dark)': { ':root': vars(palettes.dark) },
+        '@media (prefers-color-scheme: dark)': { ':root:not([data-theme="light"])': vars(palettes.dark) },
+        ':root[data-theme="dark"]': vars(palettes.dark),
       })
     }),
   ],

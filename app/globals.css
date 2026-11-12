@@ -18,11 +18,36 @@
     Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
+/* Dark values apply when the system is dark (unless the visitor chose light)
+   or when the visitor chose dark. Keep both selectors in sync. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme='light']) {
     --edge-shade: rgb(0 0 0 / 0.5);
     --tile-shadow: rgb(0 0 0 / 0.7);
   }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --edge-shade: rgb(0 0 0 / 0.5);
+  --tile-shadow: rgb(0 0 0 / 0.7);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+/* Applied for a moment while switching theme, so every surface eases
+   instead of snapping. Skipped with reduced motion. */
+.theme-transition,
+.theme-transition *,
+.theme-transition *::before,
+.theme-transition *::after {
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease !important;
 }
 
 @layer base {
@@ -181,9 +206,13 @@
   }
 
   @media (prefers-color-scheme: dark) {
-    .surface-feature {
+    :root:not([data-theme='light']) .surface-feature {
       box-shadow: inset 0 0 0 1px rgb(var(--gold) / 0.22);
     }
+  }
+
+  :root[data-theme='dark'] .surface-feature {
+    box-shadow: inset 0 0 0 1px rgb(var(--gold) / 0.22);
   }
 
   /* Tiles replace hairline borders. On sand sections they flip to cream. */
